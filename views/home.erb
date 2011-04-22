@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+	"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<title>Meta-Mojo - Srini</title>
+  <link href="../static/ie.css" media="screen" rel="stylesheet" type="text/css" />
+  <link href="../static/screen.css" media="screen" rel="stylesheet" type="text/css" />
+  <link href="../static/mm.css" media="screen" rel="stylesheet" type="text/css" />
+  <link href='http://fonts.googleapis.com/css?family=Slackey' rel='stylesheet' type='text/css'>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+  <script type='text/javascript' src='../static/jquery.defaultText.js'></script> 
+</head>
+
+<body>
+  <div id='whoami-wrapper'>
+  <div id='whoami'>
+    <div class='menuitem logo'>
+      <div class='mojo'> Meta <br /> Mojo </div>
+    </div>
+    
+    <div class='person menuitem inactive'>
+      <img style='float:left' class='profilepic' src='../static/me.jpg' />
+      <div class='mojo'>Me</div>
+    </div>
+    
+    <div class='main-actions active menuitem mlast'>
+      <img style='float:left; width:80px; margin: 0.1 0.5em' src='../static/smi/graph.png'> 
+      <div class='mojo'>My Mojo</div>
+    </div>
+
+    <div style='float:right; width: 100px; padding: 10px 25px 0 0' class='links'>
+      <a style='float:right; margin: 0 5px; color: #333' href='#'> Settings </a>
+      <a style='float:right; margin: 0 5px; color: #333' href='#'> Logout</a>
+    </div>
+  </div>
+  </div>
+
+  <script>
+    function selectSmiley(name) {
+      $.each($("#smiley-strip .smi"), function(i, v) { $(v).removeClass('selected'); });
+      $("#s-" + name).addClass('selected');
+      $("#smiley-value").val(name);
+    }
+  </script>
+  
+  <div class='container'>
+    <div class='span-15' id='center'>    
+      <form class='clearfix' id='new_entry' method='post'>
+        <textarea name='message' title='Whats in your mind?'></textarea>
+        <input type='hidden' id='smiley-value' name='smiley' value='dry' />
+        <div id='smiley-strip'>
+          <img id='s-tears' class='smi' src='../static/smi/tears.png' onclick='selectSmiley("tears")'>
+          <img id='s-sad' class='smi' src='../static/smi/sad.png' onclick='selectSmiley("sad")'>
+          <img id='s-dry' class='smi selected' src='../static/smi/dry.png' onclick='selectSmiley("dry")'>
+          <img id='s-smile' class='smi' src='../static/smi/smile.png' onclick='selectSmiley("smile")'>
+          <img id='s-biggrin' class='smi' src='../static/smi/biggrin.png' onclick='selectSmiley("biggrin")'>
+        </div>
+        <input type='submit' value='Post it!' />
+      </form>
+      
+      <br /> <br />
+      
+      <% if @posts.size > 0 %>
+        <% @posts.each do |s| %>
+
+          <div class='message  clearfix'>
+            <img class='smi' style='float:left;' src='../static/smi/<%= s.smiley %>.png'>
+            <div class='text' style="float: left; margin-left: 10px">
+              <span class='<%= s.smiley %>'>
+                <%= s.message %>
+              </span>
+              <div class='time' >
+                posted <%= time_dist(s.created_at) %> ago
+              </div>
+            </div>
+          </div>
+
+        <% end %>
+      <% else %>
+
+        <center>
+          <h1> No posts yet :( Maybe you should get started by posting a happy message first :) </h1>
+        </center>
+      <% end %>
+
+     
+      </div>
+    
+    <div class='span-8' id='right'>
+      <!--div id='nav'>
+        <a href='#'> Back Home </a> &nbsp; &nbsp; &nbsp; &nbsp;
+        <a href='#' style='float:right'> Logout </a>
+      </div-->
+      <h3 class='title'> Your All-time Mojo! </h3>
+      
+      <div class='friend-message  clearfix'>
+        <div class='mojo-count happy'> { 300, 100 } </div>  
+       <img class='smi' style='float:left;' src='../static/smi/biggrin.png'>
+       <img class='smi' style='float:left;' src='../static/smi/smile.png'>'S
+      </div>
+      
+      <div class='friend-message  clearfix'>
+       <div class='mojo-count neutral'> 45 </div>  
+       <img class='smi' style='float:left;' src='../static/smi/dry.png'>'S
+      </div>
+      
+      <div class='friend-message  clearfix'>
+        <div class='mojo-count sad'> { 211, 10 } </div>  
+       <img class='smi' style='float:left;' src='../static/smi/sad.png'>
+       <img class='smi' style='float:left;' src='../static/smi/tears.png'>'S
+     </div>
+
+     <!-- qotd based on user's last post -->
+      <div class='friend-message  clearfix'>
+        <img class='smi' style='float:left;' src='../static/smi/dry.png'>
+        <div class='text' style="float: left; margin-left: 10px">
+          <span class='neutral'>
+            Whatever happens, life has to go on - Lao Tzu
+          </span>
+          <div class='time'>
+            <a href='#'>tony</a> posted 2 days ago
+          </div>
+        </div>
+      </div>
+      
+      <br>
+      <br>
+      <h3 class='title'> Spread the word! </h3>
+      <div> Give the gift of the Mojo to your friends, your mojo will be returned. Type in the email of friends you'd like to invite, we'll send them an invite.</div>
+      <input type=text style='width: 19em; margin: 1em; margin-left: 0' />
+
+      <a href='#'> Invite! </a>
+      <!--img class='friendpic' src='../static/me.jpg' /-->
+    <div>
+    
+  </div>
+
+  <script>
+    $.defaultText();
+  </script>
+</body>
