@@ -1,3 +1,5 @@
+A 'thought-collection' microapp built in JRuby, Sinatra and destined to run in GAE.
+
 Use JRuby for this!!
 
 jruby - 1.6.0
