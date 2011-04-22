@@ -1,0 +1,6 @@
+Authentication
+Smiley timeline
+Edit posts
+Reposition the smileys in the post form in a better place
+invite friends
+Mojo-meter
