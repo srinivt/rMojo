@@ -3,6 +3,11 @@ require 'dm-core'
 require 'sinatra/reloader' if development?
 require 'dm-validations'
 
+# This is the rack stuff. Trying OmniAuth instead
+# use Rack::Session::Cookie
+# require 'rack/openid'
+# use Rack::OpenID
+
 DataMapper.setup(:default, "appengine://auto")
 DataMapper::Model.raise_on_save_failure = true
 
