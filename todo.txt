@@ -1,6 +1,25 @@
-Authentication
-Smiley timeline
+Authentication - done
+
+TODO:
+
+4/24 : ===================
+Mojo-meter - tony
+Get a sinatra-ready ec2 instance running - tony
+
+4/25 : ===================
+Make the app Datastore-agnostic - srini
+Login page - srini
+
+
+Script for download and upload of data from one cloud to another
 Edit posts
+Fix the tabs
+
+Smiley timeline Personal journal
+Friends:
+  Add friends
+  view friends' journal
+  follow friends - recent friend updates on the left
+Style fixes
+
 Reposition the smileys in the post form in a better place
-invite friends
-Mojo-meter
