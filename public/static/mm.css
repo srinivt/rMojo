@@ -146,20 +146,15 @@ form#new_entry textarea {
 }
 
 form#new_entry input[type='submit'] {
-	font-size: +1.4em;
-	padding: 0.4em;
-	border: 2px solid;
-	float: right;
-	margin-right: 22px;
-	margin-top: 5px;
-	font-family: Helvetica;
+  vertical-align: top;
+  margin-top:10px;
 }
 
 form#new_entry #smiley-strip {
 	float: left;
 	position: absolute;
 	top: 85px;
-  left: 20px;
+  left: 90px;
 }
 
 #smiley-strip .selected {
@@ -207,15 +202,15 @@ img.smi {
 	line-height: 0.8em;
 }
 
-.happy {
+.happy, .biggrin, .smile {
 	color: #58AA00;
 }
 
-.sad {
+.sad, .tears {
 	color: #5C5C5C;
 }
 
-.neutral {
+.neutral, .dry {
 	color: #0074AE;
 }
 

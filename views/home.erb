@@ -31,8 +31,23 @@
     </div>
 
     <div style='float:right; width: 100px; padding: 10px 25px 0 0' class='links'>
-      <a style='float:right; margin: 0 5px; color: #333' href='#'> Settings </a>
-      <a style='float:right; margin: 0 5px; color: #333' href='#'> Logout</a>
+      <a style='float:right; margin: 0 5px; color: #777' href='#'> Settings </a>
+
+      <% unless logged_in? %>
+
+      <!-- remember to change this to localhost when developing -->
+
+      <a style='float:right; margin: 0 5px; color: #777' class="rpxnow" onclick="return false;"
+        href="https://mojo-jr.rpxnow.com/openid/v2/signin?token_url=http%3A%2F%2Fmojo-jr.appspot.com%2Frpx"> Sign In </a>
+
+      <!--a style='float:right; margin: 0 5px; color: #777' class="rpxnow" onclick="return false;"
+      href="https://mojo-jr.rpxnow.com/openid/v2/signin?token_url=http%3A%2F%2Flocalhost%3A8080%2Frpx"> Sign In 
+      </a-->
+
+    <% else %>
+      <div style='float:right; margin: 0 5px; color: #777'> <%= session[:current_user] %> </div>
+      <a href='/logout'> Logout </a>
+    <% end %>
     </div>
   </div>
   </div>
@@ -40,8 +55,10 @@
   <script>
     function selectSmiley(name) {
       $.each($("#smiley-strip .smi"), function(i, v) { $(v).removeClass('selected'); });
+      $.each($("#smiley-strip input[type=submit]"), function(i, v) { $(v).hide() });
       $("#s-" + name).addClass('selected');
       $("#smiley-value").val(name);
+      $("#b-" + name).show();
     }
   </script>
   
@@ -52,18 +69,27 @@
         <input type='hidden' id='smiley-value' name='smiley' value='dry' />
         <div id='smiley-strip'>
           <img id='s-tears' class='smi' src='../static/smi/tears.png' onclick='selectSmiley("tears")'>
+        <input id='b-tears' style='display:none' type='submit' value='Post' />
           <img id='s-sad' class='smi' src='../static/smi/sad.png' onclick='selectSmiley("sad")'>
+        <input id='b-sad' style='display:none' type='submit' value='Post' />
           <img id='s-dry' class='smi selected' src='../static/smi/dry.png' onclick='selectSmiley("dry")'>
+        <input id='b-dry' type='submit' value='Post' />
           <img id='s-smile' class='smi' src='../static/smi/smile.png' onclick='selectSmiley("smile")'>
+        <input id='b-smile' style='display:none' type='submit' value='Post' />
           <img id='s-biggrin' class='smi' src='../static/smi/biggrin.png' onclick='selectSmiley("biggrin")'>
+        <input id='b-biggrin' style='display:none' type='submit' value='Post' />
         </div>
-        <input type='submit' value='Post it!' />
       </form>
       
-      <br /> <br />
+      <br /> <br /> <br />
+
+      <%unless logged_in? %>
+        <h1> You have to be logged in to see all the Mojoness! </h1>
+      <% else %>
       
       <% if @posts.size > 0 %>
         <% @posts.each do |s| %>
+          <%= puts s.inspect %>
 
           <div class='message  clearfix'>
             <img class='smi' style='float:left;' src='../static/smi/<%= s.smiley %>.png'>
@@ -81,9 +107,12 @@
       <% else %>
 
         <center class='no_posts'>
+          <!-- need some padding here! -->
           <h2> No posts yet :( </h2> <h3> Maybe you should get started <br /> by posting a happy message first :) </h3>
         </center>
       <% end %>
+
+    <% end %>
 
      
       </div>
@@ -96,18 +125,19 @@
       <h3 class='title'> Your All-time Mojo! </h3>
       
       <div class='friend-message  clearfix'>
-        <div class='mojo-count happy'> { 300, 100 } </div>  
+        <!-- start with mojo meter of 1 instead of all 0's? -->
+        <div class='mojo-count happy'> { <%= @scounts['biggrin'] %>, <%= @scounts['smile'] %> } </div>  
        <img class='smi' style='float:left;' src='../static/smi/biggrin.png'>
        <img class='smi' style='float:left;' src='../static/smi/smile.png'>'S
       </div>
       
       <div class='friend-message  clearfix'>
-       <div class='mojo-count neutral'> 45 </div>  
+        <div class='mojo-count neutral'> <%= @scounts['dry'] %> </div>  
        <img class='smi' style='float:left;' src='../static/smi/dry.png'>'S
       </div>
       
       <div class='friend-message  clearfix'>
-        <div class='mojo-count sad'> { 211, 10 } </div>  
+        <div class='mojo-count sad'> { <%= @scounts['sad'] %>, <%= @scounts['tears'] %> } </div>  
        <img class='smi' style='float:left;' src='../static/smi/sad.png'>
        <img class='smi' style='float:left;' src='../static/smi/tears.png'>'S
      </div>
@@ -145,4 +175,16 @@
   <script>
     $.defaultText();
   </script>
+
+
+  <script type="text/javascript">
+    var rpxJsHost = (("https:" == document.location.protocol) ? "https://" : "http://static.");
+    document.write(unescape("%3Cscript src='" + rpxJsHost +
+          "rpxnow.com/js/lib/rpx.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+      RPXNOW.overlay = true;
+      RPXNOW.language_preference = 'en';
+      </script>
+
 </body>

@@ -13,5 +13,11 @@ gem 'dm-appengine'
 gem 'sinatra'
 gem 'sinatra-reloader'
 gem 'jruby-rack', "1.0.4"
-# gem "rack-openid"
-# gem "ruby-openid-apps-discovery"
+gem 'json-jruby'
+gem 'jruby-openssl'
+
+gem "rack-openid"
+#gem 'omniauth'
+#gem 'openid_dm_store'
+
+gem "ruby-openid-apps-discovery"
