@@ -2,6 +2,7 @@ body {
 	background-color: #35373D;
 	color: #fefefe;
 	background-image: url(../static/smi/bg.png);
+	font-family: "Century Gothic", "Gill Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 	/*background: #666 url("../static/smi/ppg-mojojojo.jpg") no-repeat top left;*/
 }
 
@@ -158,7 +159,6 @@ form#new_entry textarea {
 	font-size: +2em;
 	border-radius: 4px;
 	padding: 0.5em;	
-	font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
 	background-color: #efefef;
 	margin: 0;
 	border-bottom: none;
