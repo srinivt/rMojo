@@ -3,6 +3,7 @@ require 'dm-core'
 require 'sinatra/reloader' if development?
 require 'dm-validations'
 require 'appengine-apis/urlfetch'
+require 'appengine-apis/datastore'
 require 'json'
 
 # This is the rack stuff. Trying OmniAuth instead
@@ -15,14 +16,14 @@ enable :sessions
 DataMapper.setup(:default, "appengine://auto")
 DataMapper::Model.raise_on_save_failure = true
 
-PostSmileys = %w(tears sad dry smile biggrin)
-
 class Post
+  Smileys = %w(tears sad dry smile biggrin)
+  
   include DataMapper::Resource
 
   property :id, Serial
   property :user, User, :required => true
-  property :smiley, Text, :required => true
+  property :smiley, ByteString, :required => true
   property :message, Text, :required => true
   property :created_at, Time, :default => lambda { |r, p| Time.now }
 
@@ -66,9 +67,7 @@ get '/' do
   @scounts = Hash.new
   if logged_in?
     @posts = Post.all(:order => [:created_at.desc], :user => current_user)
-    PostSmileys.each do |s|
-      @scounts[s] = Post.count(:conditions => ["smiley = ?", s])
-    end
+    @scounts = count_smileys
   end
   erb :home
 end
@@ -87,9 +86,17 @@ post '/' do
   end
 end
 
-# TODO Authentication
-
 helpers do
+  def count_smileys
+    h = Hash.new
+    Post::Smileys.each do |s|
+      q = AppEngine::Datastore::Query.new('Posts')
+      q = q.filter("user", '==', current_user).filter("smiley", '==', s)
+      h[s] = q.count
+    end
+    return h
+  end
+  
   def current_user
     session[:current_user]
   end
