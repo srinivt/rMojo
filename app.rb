@@ -137,14 +137,18 @@ helpers do
 
     dist /= 60
     if dist <= 12
-      return "about #{dist} hours"
+      return "about #{dist} hour#{'s' if dist > 1}"
     end
 
     dist /= 24
     if dist <= 0
       return "about 1 day"
+    elsif dist < 7
+      return "about #{dist} days"
     elsif dist <= 30
-      return "about a month"
+      return "about #{dist} week#{'s' if dist / 7 > 1}"
+    elsif dist <= 365
+      return "about #{dist / 30} month#{'s' if dist / 30 > 1}"
     end
 
     return "a long time"

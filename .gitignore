@@ -1,3 +1,4 @@
 .gems/*
 WEB_INF/lib/*
 WEB_INF/appengine-generated/*
+bin/*

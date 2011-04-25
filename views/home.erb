@@ -17,35 +17,33 @@
   <div id='whoami-wrapper'>
   <div id='whoami'>
     <div class='menuitem logo'>
-      <div class='mojo'> Meta <br /> Mojo </div>
+      <div class='mojo'> Meta Mojo </div>
     </div>
     
-    <div class='person menuitem inactive'>
-      <img style='float:left' class='profilepic' src='../static/me.jpg' />
-      <div class='mojo'>Me</div>
+    <div class='person menuitem active'>
+      <!--img style='float:left' class='profilepic' src='../static/me.jpg' /-->
+      <h3>My Updates</h3>
     </div>
     
-    <div class='main-actions active menuitem mlast'>
-      <img style='float:left; width:80px; margin: 0.1 0.5em' src='../static/smi/graph.png'> 
-      <div class='mojo'>My Mojo</div>
+    <div class='main-actions menuitem'>
+      <!--img style='float:left; width:80px; margin: 0.1 0.5em' src='../static/smi/graph.png'--> 
+      <h3>My Mojo</h3>
     </div>
 
-    <div style='float:right; width: 100px; padding: 10px 25px 0 0' class='links'>
-      <a style='float:right; margin: 0 5px; color: #777' href='#'> Settings </a>
-
+    <div class='logout'>
       <% unless logged_in? %>
 
       <!-- remember to change this to localhost when developing -->
 
-      <a style='float:right; margin: 0 5px; color: #777' class="rpxnow" onclick="return false;"
-        href="https://mojo-jr.rpxnow.com/openid/v2/signin?token_url=http%3A%2F%2Fmojo-jr.appspot.com%2Frpx"> Sign In </a>
-
       <!--a style='float:right; margin: 0 5px; color: #777' class="rpxnow" onclick="return false;"
+        href="https://mojo-jr.rpxnow.com/openid/v2/signin?token_url=http%3A%2F%2Fmojo-jr.appspot.com%2Frpx"> Sign In </a-->
+
+      <a style='float:right; margin: 0 5px; color: #777' class="rpxnow" onclick="return false;"
       href="https://mojo-jr.rpxnow.com/openid/v2/signin?token_url=http%3A%2F%2Flocalhost%3A8080%2Frpx"> Sign In 
-      </a-->
+      </a>
 
     <% else %>
-      <div style='float:right; margin: 0 5px; color: #777'> <%= session[:current_user] %> </div>
+      Hey, <%= session[:current_user] %>! &nbsp;&nbsp;&nbsp;
       <a href='/logout'> Logout </a>
     <% end %>
     </div>
@@ -66,17 +64,19 @@
     <div class='span-15' id='center'>    
       <form class='clearfix' id='new_entry' method='post'>
         <textarea name='message' title='Whats in your mind?'></textarea>
-        <input type='hidden' id='smiley-value' name='smiley' value='dry' />
+        <input type='hidden' id='smiley-value' name='smiley' value='<%= Post::DefaultSmiley %>' />
+
         <div id='smiley-strip'>
-          
           <% Post::Smileys.reverse.each do |s| %>
             <div id='s-<%= s %>' class='smi <%= 'selected' if s == Post::DefaultSmiley %>'>
-              <img id='s-i-<%= s %>' class='smi-i' src='../static/smi/<%= s %>.png' onmouseover='selectSmiley("<%= s %>")'>
-              <input id='b-<%= s %>' style='display:<%= s == Post::DefaultSmiley ? "show" : "none" %>' type='submit' value='Post' />
+              <img id='s-i-<%= s %>' class='smi-i' src='../static/smi/<%= s %>.png'
+                onmouseover='selectSmiley("<%= s %>")'>
+              <input id='b-<%= s %>' style='display:<%= s == Post::DefaultSmiley ? "show" : "none" %>'
+                type='submit' value='Post' />
             </div>
           <% end %>
-
         </div>
+        
       </form>
 
       <%unless logged_in? %>
@@ -85,8 +85,6 @@
       
       <% if @posts.size > 0 %>
         <% @posts.each do |s| %>
-          <%= puts s.inspect %>
-
           <div class='message  clearfix'>
             <img class='smi' style='float:left;' src='../static/smi/<%= s.smiley %>.png'>
             <div class='text' style="float: left; margin-left: 10px">
@@ -104,7 +102,9 @@
 
         <center class='no_posts'>
           <!-- need some padding here! -->
-          <h2> No posts yet :( </h2> <h3> Maybe you should get started <br /> by posting a happy message first :) </h3>
+          <h2> No posts yet :( </h2> 
+          <h3> Maybe you should get started <br /> 
+            by posting a happy message first :) </h3>
         </center>
       <% end %>
 
@@ -114,10 +114,7 @@
       </div>
     
     <div class='span-8' id='right'>
-      <!--div id='nav'>
-        <a href='#'> Back Home </a> &nbsp; &nbsp; &nbsp; &nbsp;
-        <a href='#' style='float:right'> Logout </a>
-      </div-->
+      
       <h3 class='title'> Your All-time Mojo! </h3>
       
       <div class='friend-message  clearfix'>
@@ -158,7 +155,6 @@
       <input type=text style='width: 19em; margin: 1em; margin-left: 0' />
 
       <a href='#'> Invite! </a>
-      <!--img class='friendpic' src='../static/me.jpg' /-->
     <div>
 
     <center>
