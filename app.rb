@@ -18,6 +18,7 @@ DataMapper::Model.raise_on_save_failure = true
 
 class Post
   Smileys = %w(tears sad dry smile biggrin)
+  DefaultSmiley = 'smile'
   
   include DataMapper::Resource
 
@@ -76,7 +77,7 @@ post '/' do
   # handle blank messages
   p = Post.create(:message => params[:message],
               :user => current_user,
-              :smiley => params[:smiley] || "sad",
+              :smiley => params[:smiley] || Post::DefaultSmiley,
               :created_at => Time.now )
   if p.saved?
     redirect '/'

@@ -37,12 +37,12 @@
 
       <!-- remember to change this to localhost when developing -->
 
-      <!--a style='float:right; margin: 0 5px; color: #777' class="rpxnow" onclick="return false;"
-        href="https://mojo-jr.rpxnow.com/openid/v2/signin?token_url=http%3A%2F%2Fmojo-jr.appspot.com%2Frpx"> Sign In </a-->
-
       <a style='float:right; margin: 0 5px; color: #777' class="rpxnow" onclick="return false;"
+        href="https://mojo-jr.rpxnow.com/openid/v2/signin?token_url=http%3A%2F%2Fmojo-jr.appspot.com%2Frpx"> Sign In </a>
+
+      <!--a style='float:right; margin: 0 5px; color: #777' class="rpxnow" onclick="return false;"
       href="https://mojo-jr.rpxnow.com/openid/v2/signin?token_url=http%3A%2F%2Flocalhost%3A8080%2Frpx"> Sign In 
-      </a>
+      </a-->
 
     <% else %>
       <div style='float:right; margin: 0 5px; color: #777'> <%= session[:current_user] %> </div>
@@ -68,20 +68,16 @@
         <textarea name='message' title='Whats in your mind?'></textarea>
         <input type='hidden' id='smiley-value' name='smiley' value='dry' />
         <div id='smiley-strip'>
-          <img id='s-tears' class='smi' src='../static/smi/tears.png' onclick='selectSmiley("tears")'>
-        <input id='b-tears' style='display:none' type='submit' value='Post' />
-          <img id='s-sad' class='smi' src='../static/smi/sad.png' onclick='selectSmiley("sad")'>
-        <input id='b-sad' style='display:none' type='submit' value='Post' />
-          <img id='s-dry' class='smi selected' src='../static/smi/dry.png' onclick='selectSmiley("dry")'>
-        <input id='b-dry' type='submit' value='Post' />
-          <img id='s-smile' class='smi' src='../static/smi/smile.png' onclick='selectSmiley("smile")'>
-        <input id='b-smile' style='display:none' type='submit' value='Post' />
-          <img id='s-biggrin' class='smi' src='../static/smi/biggrin.png' onclick='selectSmiley("biggrin")'>
-        <input id='b-biggrin' style='display:none' type='submit' value='Post' />
+          
+          <% Post::Smileys.reverse.each do |s| %>
+            <div id='s-<%= s %>' class='smi <%= 'selected' if s == Post::DefaultSmiley %>'>
+              <img id='s-i-<%= s %>' class='smi-i' src='../static/smi/<%= s %>.png' onmouseover='selectSmiley("<%= s %>")'>
+              <input id='b-<%= s %>' style='display:<%= s == Post::DefaultSmiley ? "show" : "none" %>' type='submit' value='Post' />
+            </div>
+          <% end %>
+
         </div>
       </form>
-      
-      <br /> <br /> <br />
 
       <%unless logged_in? %>
         <h1> You have to be logged in to see all the Mojoness! </h1>

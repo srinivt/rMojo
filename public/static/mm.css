@@ -130,6 +130,7 @@ h1, h2, h3, h4, h5 {
 
 #new_entry {
   position: relative;
+  margin-bottom: 8em;
 }
 
 form#new_entry textarea {
@@ -148,13 +149,14 @@ form#new_entry textarea {
 form#new_entry input[type='submit'] {
   vertical-align: top;
   margin-top:10px;
+  font-weight: bold;
 }
 
 form#new_entry #smiley-strip {
 	float: left;
 	position: absolute;
 	top: 85px;
-  left: 90px;
+  left: 50px;
 }
 
 #smiley-strip .selected {
@@ -165,9 +167,11 @@ form#new_entry #smiley-strip {
 	background-image: -moz-linear-gradient(top, #efefef, gray);
 }
 
-#smiley-strip img.smi {
-	margin: 0 0.4em;
-	padding: 0.3em 0.6em;
+#smiley-strip .smi {
+  float: left;
+	margin: 0 0.7em;
+	padding: 0.4em 0.6em;
+  padding-bottom: 0;
 }
 
 img.smi {
@@ -186,6 +190,10 @@ img.smi {
 
 .title {
 	border-bottom: 1px dotted #ccc; padding-bottom: 10px;
+}
+
+.message:first {
+  margin-top: 50px;
 }
 
 .message {
