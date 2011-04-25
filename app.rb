@@ -7,15 +7,10 @@ require 'appengine-apis/datastore'
 require 'json'
 require 'cgi'
 
-# This is the rack stuff. Trying OmniAuth instead
-use Rack::Session::Cookie
-require 'rack/openid'
-use Rack::OpenID
-
 enable :sessions
 
 DataMapper.setup(:default, "appengine://auto")
-DataMapper::Model.raise_on_save_failure = true
+# DataMapper::Model.raise_on_save_failure = true
 
 # RPXTokenURL = 'http://mojo-jr.appspot.com/rpx'  # appspot
 RPXTokenURL = 'http://localhost:8080/rpx'

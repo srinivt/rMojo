@@ -6,10 +6,18 @@
      $("#smiley-value").val(name);
      $("#b-" + name).show();
    }
+   
+   function checkform() {
+     if ($("textarea[name=message]").val().trim().length == 0) {
+      alert("Can't post a blank message for you.. No, never!");
+      return false;
+    }
+    return true;
+   }
  </script>
 
-<form class='clearfix' id='new_entry' method='post'>
-  <textarea name='message' title='Whats in your mind?'></textarea>
+<form class='clearfix' id='new_entry' method='post' onsubmit='if (!checkform()) { $("textarea[name=message]").focus(); return false; }'>
+  <textarea name='message' id='new_entry_message" title='Whats in your mind?'></textarea>
   <input type='hidden' id='smiley-value' name='smiley' value='<%= Post::DefaultSmiley %>' />
 
   <div id='smiley-strip'>

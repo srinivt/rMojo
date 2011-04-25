@@ -144,11 +144,20 @@ h1, h2, h3, h4, h5 {
 }
 
 .login_box {
-  margin-top: 4em; 
+  margin-top: 7em; 
   background-color: #171717; 
   border-radius: 1em; 
   padding: 1em ;
   border: 2px solid transparent;
+}
+
+.login_box img {
+  float: left;
+}
+
+.login_box h2 {
+  margin-bottom: 0;
+  text-align: center;
 }
 
 .login_box:hover {
@@ -324,7 +333,10 @@ img.smi {
 }
 
 .info_box {
-  padding: 2em 3em; border-radius: 1em; border: 1.5em dotted #222;
+  padding: 2em 3em; 
+  border-radius: 1em; 
+  border: 1.5em dotted #222;
+  margin-top: 2.5em;
 }
 
 .info_box h1 {
