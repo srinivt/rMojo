@@ -1,0 +1,25 @@
+<script>
+   function selectSmiley(name) {
+     $.each($("#smiley-strip .smi"), function(i, v) { $(v).removeClass('selected'); });
+     $.each($("#smiley-strip input[type=submit]"), function(i, v) { $(v).hide() });
+     $("#s-" + name).addClass('selected');
+     $("#smiley-value").val(name);
+     $("#b-" + name).show();
+   }
+ </script>
+
+<form class='clearfix' id='new_entry' method='post'>
+  <textarea name='message' title='Whats in your mind?'></textarea>
+  <input type='hidden' id='smiley-value' name='smiley' value='<%= Post::DefaultSmiley %>' />
+
+  <div id='smiley-strip'>
+    <% Post::Smileys.reverse.each do |s| %>
+      <div id='s-<%= s %>' class='smi <%= 'selected' if s == Post::DefaultSmiley %>'>
+        <img id='s-i-<%= s %>' class='smi-i' src='../static/smi/<%= s %>.png'
+          onmouseover='selectSmiley("<%= s %>")'>
+        <input id='b-<%= s %>' style='display:<%= s == Post::DefaultSmiley ? "show" : "none" %>'
+          type='submit' value='Post' />
+      </div>
+    <% end %>
+  </div>
+</form>

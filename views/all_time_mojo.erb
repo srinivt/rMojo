@@ -1,0 +1,41 @@
+<h3 class='title'> Your All-time Mojo! </h3>
+
+<div class='friend-message  clearfix'>
+  <!-- start with mojo meter of 1 instead of all 0's? -->
+  <div class='mojo-count happy'> { <%= @scounts['biggrin'] %>, <%= @scounts['smile'] %> } </div>  
+ <img class='smi' style='float:left;' src='../static/smi/biggrin.png'>
+ <img class='smi' style='float:left;' src='../static/smi/smile.png'>'S
+</div>
+
+<div class='friend-message  clearfix'>
+  <div class='mojo-count neutral'> <%= @scounts['dry'] %> </div>  
+ <img class='smi' style='float:left;' src='../static/smi/dry.png'>'S
+</div>
+
+<div class='friend-message  clearfix'>
+  <div class='mojo-count sad'> { <%= @scounts['sad'] %>, <%= @scounts['tears'] %> } </div>  
+ <img class='smi' style='float:left;' src='../static/smi/sad.png'>
+ <img class='smi' style='float:left;' src='../static/smi/tears.png'>'S
+</div>
+
+<!-- qotd based on user's last post -->
+<div class='friend-message  clearfix'>
+  <img class='smi' style='float:left;' src='../static/smi/dry.png'>
+  <div class='text' style="float: left; margin-left: 10px">
+    <span class='neutral'>
+      Whatever happens, life has to go on - Lao Tzu
+    </span>
+    <div class='time'>
+      <a href='#'>tony</a> posted 2 days ago
+    </div>
+  </div>
+</div>
+
+ <br>
+  <br>
+  <h3 class='title'> Spread the word! </h3>
+  <div> Give the gift of the Mojo to your friends, your mojo will be returned. Type in the email of friends you'd like to invite, we'll send them an invite.</div>
+  <input type=text style='width: 19em; margin: 1em; margin-left: 0' />
+
+  <a href='#'> Invite! </a>
+<div>

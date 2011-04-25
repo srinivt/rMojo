@@ -5,6 +5,7 @@ require 'dm-validations'
 require 'appengine-apis/urlfetch'
 require 'appengine-apis/datastore'
 require 'json'
+require 'cgi'
 
 # This is the rack stuff. Trying OmniAuth instead
 use Rack::Session::Cookie
@@ -15,6 +16,11 @@ enable :sessions
 
 DataMapper.setup(:default, "appengine://auto")
 DataMapper::Model.raise_on_save_failure = true
+
+# RPXTokenURL = 'http://mojo-jr.appspot.com/rpx'  # appspot
+RPXTokenURL = 'http://localhost:8080/rpx'
+
+LoginLink = "https://mojo-jr.rpxnow.com/openid/v2/signin?token_url=#{CGI.escape(RPXTokenURL)}"
 
 class Post
   Smileys = %w(tears sad dry smile biggrin)

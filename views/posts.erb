@@ -1,0 +1,22 @@
+<% if @posts.size > 0 %>
+  <% @posts.each do |s| %>
+    <div class='message  clearfix'>
+      <img class='smi' style='float:left;' src='../static/smi/<%= s.smiley %>.png'>
+      <div class='text' style="float: left; margin-left: 10px">
+        <span class='<%= s.smiley %>'>
+          <%= s.message %>
+        </span>
+        <div class='time' >
+          posted <%= time_dist(s.created_at) %> ago
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% else %>
+  <center class='no_posts'>
+    <!-- need some padding here! -->
+    <h2> No posts yet :( </h2> 
+    <h3> Maybe you should get started <br /> 
+      by posting a happy message first :) </h3>
+  </center>
+<% end %>

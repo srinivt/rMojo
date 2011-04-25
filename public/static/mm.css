@@ -49,6 +49,18 @@ h1, h2, h3, h4, h5 {
   padding: 10px 25px 0 0;
 }
 
+.logout a {
+  color: #777;
+}
+
+.logout a:hover {
+  color: #999;
+}
+
+.login_box .rpxnow {
+  color: #777;
+}
+
 .logo {
 	margin: 0 4em 0 2em !important;
 	border: none !important;
@@ -113,8 +125,8 @@ h1, h2, h3, h4, h5 {
 	height: 50px;
 }
 
-#center, #right {
-	margin-top: 100px;
+#center {
+	margin-top: 70px;
 }
 
 #center {
@@ -128,7 +140,20 @@ h1, h2, h3, h4, h5 {
 	border-right: none;
 	min-height: 300px;
 	padding-right: 10px;
-	margin-top: 110px;
+	margin-top: 70px;
+}
+
+.login_box {
+  margin-top: 4em; 
+  background-color: #171717; 
+  border-radius: 1em; 
+  padding: 1em ;
+  border: 2px solid transparent;
+}
+
+.login_box:hover {
+  background-color: #1d1d1d;
+  border: 2px solid #222;
 }
 
 #right #nav {
@@ -296,4 +321,21 @@ img.smi {
 
 .no_posts h3, .no_posts h2 {
   color: #666;
+}
+
+.info_box {
+  padding: 2em 3em; border-radius: 1em; border: 1.5em dotted #222;
+}
+
+.info_box h1 {
+  color: #fff;
+}
+
+.info_box ul {
+  margin-left: 2em;
+}
+
+.info_box li {
+  font-size: 2.5em;
+  color: #999;
 }
