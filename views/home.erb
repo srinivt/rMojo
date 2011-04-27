@@ -9,76 +9,66 @@
   <link href="../static/screen.css" media="screen" rel="stylesheet" type="text/css" />
   <link href="../static/mm.css" media="screen" rel="stylesheet" type="text/css" />
   <link href='http://fonts.googleapis.com/css?family=Slackey' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Cuprum' rel='stylesheet' type='text/css'>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
   <script type='text/javascript' src='../static/jquery.defaultText.js'></script> 
 </head>
 
 <body>
   <div id='whoami-wrapper'>
-  <div id='whoami'>
-    <div class='menuitem logo'>
-      <div class='mojo'> Meta Mojo </div>
-    </div>
+    <div id='whoami'>
+      <div class='menuitem logo'>
+        <div class='mojo happy'> Meta Mojo </div>
+      </div>
     
-    <% if logged_in? %>
-    <div class='person menuitem active'>
-      <h3>My Updates</h3>
-    </div>
-    
-    <div class='main-actions menuitem'>
-      <h3>My Mojo</h3>
-    </div>
-    <% end %>
-
-    <div class='logout'>
-    <% unless logged_in? %>
-      <a class="rpxnow" onclick="return false;" href="<%= LoginLink %>"> Sign In </a>
-    <% else %>
-      Hey, <%= session[:current_user] %>! &nbsp;&nbsp;&nbsp;
-      <a href='/logout'> Logout </a>
-    <% end %>
-    </div>
-  </div>
-  </div>
-
-  <div class='container'>
-    <div class='span-15' id='center'>    
-      <%unless logged_in? %>
-        <%= erb :unloggedin %>
-      <% else %>
-        <%= erb :new_post %>  
-        <%= erb :posts %>
-      <% end %> 
-    </div>
-    
-    <!-- fix top margins -->
-    <div class='span-8' id='right'>
       <% if logged_in? %>
-        <%= erb :all_time_mojo %>
-      <% else %>
-        <%= erb :login_box %>
+      <div class='person menuitem active'>
+        <h3>My Updates</h3>
+      </div>
+    
+      <div class='main-actions menuitem'>
+        <h3>My Mojo</h3>
+      </div>
       <% end %>
 
-    <!--center>
-      <img src="http://code.google.com/appengine/images/appengine-silver-120x30.gif" 
-        alt="Powered by Google App Engine" />
-    </center-->
-    
+      <div class='logout'>
+      <% unless logged_in? %>
+        <a class="rpxnow" onclick="return false;" href="<%= LoginLink %>"> Sign In </a>
+      <% else %>
+        Hey, <%= session[:current_user] %>! &nbsp;&nbsp;&nbsp;
+        <a href='/logout'> Logout </a>
+      <% end %>
+      </div>
+    </div>
   </div>
 
-  <script>
-    $.defaultText();
-  </script>
+  <div class='container'>  
+    <% unless logged_in? %>
+      <%= erb :unloggedin %>
+    <% else %>
+      <div class='span-15' id='center'>    
+        <%= erb :new_post %>  
+        <%= erb :posts %>
+      </div>
+    
+      <!-- TODO: fix top margins -->
+      <div class='span-8' id='right'>
+        <%= erb :all_time_mojo %>
+      </div>
+    <% end %>
+  </div>
 
+  <script> $.defaultText(); </script>
 
   <script type="text/javascript">
     var rpxJsHost = (("https:" == document.location.protocol) ? "https://" : "http://static.");
     document.write(unescape("%3Cscript src='" + rpxJsHost +
           "rpxnow.com/js/lib/rpx.js' type='text/javascript'%3E%3C/script%3E"));
-    </script>
-    <script type="text/javascript">
+  </script>
+    
+  <script type="text/javascript">
       RPXNOW.overlay = true;
       RPXNOW.language_preference = 'en';
-      </script>
+    </script>
 
 </body>

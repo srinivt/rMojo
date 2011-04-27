@@ -1,18 +1,18 @@
 body {
-	background-color: #35373D;
+	background-color: #0A0A0A;
 	color: #fefefe;
 	background-image: url(../static/smi/bg.png);
-	font-family: "Century Gothic", "Gill Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-family: "Century Gothic", "Gill Sans", "Helvetica Neuve", Helvetica, Arial, sans-serif;
 	/*background: #666 url("../static/smi/ppg-mojojojo.jpg") no-repeat top left;*/
 }
 
 input[type=text], textarea {
-  font-family: "Century Gothic", "Gill Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Century Gothic", "Helvetica Neuve", Helvetica, Arial, sans-serif;
 }
 
 h1, h2, h3, h4, h5 {
 	color: #aaa;
-	font-family: Georgia, Palatino, Times, serif;
+	font-family: Cuprum, Helvetica, Arial, sans-serif;
 }
 
 #whoami-wrapper {
@@ -31,6 +31,7 @@ h1, h2, h3, h4, h5 {
 	height: 40px;
 	background: -webkit-gradient(linear,left top,left bottom,from(#333),to(#222));
 	background: -moz-linear-gradient(top,#333,#222);	
+	top: 0;
 }
 
 #whoami {
@@ -144,20 +145,22 @@ h1, h2, h3, h4, h5 {
 }
 
 .login_box {
-  margin-top: 7em; 
+  margin-top: 2em; 
   background-color: #171717; 
   border-radius: 1em; 
-  padding: 1em ;
+  padding: 0.3em ;
   border: 2px solid transparent;
 }
 
 .login_box img {
   float: left;
+  margin: 1em;
+  height: 40px;
 }
 
 .login_box h2 {
   margin-bottom: 0;
-  text-align: center;
+  font-size: 2.5em !important;
 }
 
 .login_box:hover {
@@ -248,7 +251,7 @@ img.smi {
 }
 
 .title {
-	border-bottom: 1px dotted #ccc; padding-bottom: 10px;
+	border-bottom: 1px dashed #444;
 }
 
 .message:first {
@@ -270,15 +273,15 @@ img.smi {
 }
 
 .happy, .biggrin, .smile {
-	color: #58AA00;
+	color: #58AA00 !important;
 }
 
 .sad, .tears {
-	color: #5C5C5C;
+	color: #5C5C5C !important;
 }
 
 .neutral, .dry {
-	color: #0074AE;
+	color: #0074AE !important;
 }
 
 /*http://htmlhelp.com/cgi-bin/color.cgi*/
@@ -333,21 +336,44 @@ img.smi {
 }
 
 .info_box {
-  padding: 2em 3em; 
+  padding: 1em; 
   border-radius: 1em; 
-  border: 1.5em dotted #222;
-  margin-top: 2.5em;
+  /* border: 1.5em dotted #222; */
+  margin-top: 3.5em;
 }
 
-.info_box h1 {
-  color: #fff;
+.info_box > img {
+  float: left;
+  margin-top: 4em;
 }
 
 .info_box ul {
-  margin-left: 2em;
+  margin-left: 1em;
+  list-style-type: none;
+  float: right;
+  width: 45%;
 }
 
-.info_box li {
+.info_box li h2 {
+  font-size: 3em;
+  margin: 0.2em 0;
+  padding: 0;
+}
+
+.info_box li h3 {
   font-size: 2.5em;
-  color: #999;
+  margin: 0.6em;
+}
+
+.info_box li h2, .info_box li h3 {
+  font-family: Cuprum, "Helvetica", "Arial", sans;
+  font-weight: bold;
+  text-shadow: 2px 2px 2px #121212;
+  text-transform: capitalize;
+}
+
+.info_box li .normal {
+  font-size: 1.4em;
+  font-weight: normal;
+  color: #ccc;
 }
