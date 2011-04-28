@@ -1,0 +1,22 @@
+# Linux todo:
+
+# Install ruby-dev packages
+sudo apt-get install ruby1.8-dev
+
+# Install MongoDb
+# http://www.mongodb.org/display/DOCS/Ubuntu+and+Debian+packages
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10
+deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen
+sudo apt-get install mongodb-10gen
+
+# Install the necessary gems:
+gem install json
+gem install dm-core -v 1.1.0
+gem install dm-aggregates -v 1.1.0
+gem install mongo -v 1.2.4  
+gem install dm-validations
+gem install dm-mongo-adapter
+gem install sinatra  
+gem install httpclient
+  
+# TODO: Figure out how to use bundler to bundle these things up

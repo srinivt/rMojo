@@ -1,19 +1,43 @@
+require 'rubygems'
 require 'sinatra'
-require 'dm-core'
 require 'sinatra/reloader' if development?
-require 'dm-validations'
-require 'appengine-apis/urlfetch'
-require 'appengine-apis/datastore'
 require 'json'
 require 'cgi'
+require 'dm-core'
+require 'dm-validations'
+
+if RUBY_PLATFORM == 'java'
+  require 'appengine-apis/urlfetch'
+  require 'appengine-apis/datastore'
+else
+  require 'httpclient'
+end
+
+configure do
+  set :port, 8080
+end
 
 enable :sessions
 
-DataMapper.setup(:default, "appengine://auto")
+if RUBY_PLATFORM == "java"
+  DataMapper.setup(:default, "appengine://auto")
+else
+  DataMapper.setup(:default,
+    :adapter  => 'mongo',
+    :database => 'meta_mojo'
+  )
+  
+  class User < String
+    # Placeholder for Mongodb.
+    # User object just holds the email address
+  end
+  
+  class ByteString < String; end
+end
 # DataMapper::Model.raise_on_save_failure = true
 
-RPXTokenURL = 'http://mojo-jr.appspot.com/rpx'  # appspot
-# RPXTokenURL = 'http://localhost:8080/rpx'
+# RPXTokenURL = 'http://mojo-jr.appspot.com/rpx'  # appspot
+RPXTokenURL = 'http://localhost:8080/rpx'
 
 LoginLink = "https://mojo-jr.rpxnow.com/openid/v2/signin?token_url=#{CGI.escape(RPXTokenURL)}"
 
@@ -24,9 +48,15 @@ class Post
   include DataMapper::Resource
 
   property :id, Serial
-  property :user, User, :required => true
-  property :smiley, ByteString, :required => true
-  property :message, Text, :required => true
+  if RUBY_PLATFORM == 'java'
+    property :user, User, :required => true
+    property :smiley, ByteString, :required => true
+  else
+    property :user, String, :required => true
+    property :smiley, String, :required => true
+  end
+  
+  property :message, Text, :required => true, :lazy => false
   property :created_at, Time, :default => lambda { |r, p| Time.now }
 
   validates_presence_of :message
@@ -41,17 +71,12 @@ post '/rpx' do
 
   url = 'https://rpxnow.com/api/v2/auth_info'
   query = { 
-    :token => params[:token], 
-    :format => "json",
-    :apiKey => api_key
+    'token' => params[:token], 
+    'format' => "json",
+    'apiKey' => api_key
   }
 
-  resp = JSON.load(AppEngine::URLFetch.fetch(url, 
-    :method => 'post',
-    :payload => query.map { |k,v|
-      "#{CGI::escape k.to_s}=#{CGI::escape v.to_s}"
-    }.join('&')
-  ).body)
+  resp = JSON.load(url_fetch(url, query))
 
   session[:current_user] = email_from_data(resp)
 
@@ -89,12 +114,32 @@ post '/' do
 end
 
 helpers do
+  def url_fetch(url, query)
+    if RUBY_PLATFORM == 'java'
+      AppEngine::URLFetch.fetch(url, 
+        :method => 'post',
+        :payload => query.map { |k,v|
+          "#{CGI::escape k.to_s}=#{CGI::escape v.to_s}"
+        }.join('&')
+      ).body
+    else
+      # TODO: Make LoginLink an arg?
+      client = HTTPClient.new
+      res = client.post(url, query)
+      res.body
+    end
+  end
+    
   def count_smileys
     h = Hash.new
     Post::Smileys.each do |s|
-      q = AppEngine::Datastore::Query.new('Posts')
-      q = q.filter("user", '==', current_user).filter("smiley", '==', s)
-      h[s] = q.count
+      if RUBY_PLATFORM == 'java'
+        q = AppEngine::Datastore::Query.new('Posts')
+        q = q.filter("user", '==', current_user).filter("smiley", '==', s)
+        h[s] = q.count
+      else
+        h[s] = Post.count(:smiley => s)
+      end      
     end
     return h
   end
