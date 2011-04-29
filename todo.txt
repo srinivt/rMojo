@@ -1,21 +1,24 @@
 Authentication - done
-
-TODO:
-
-4/24 : ===================
-Mojo-meter - tony
 Get a sinatra-ready ec2 instance running - tony
-
-4/25 : ===================
+Mojo-meter - tony
 Make the app Datastore-agnostic - srini
 Login page - srini
 
+TODO:
 
-Script for download and upload of data from one cloud to another
-Edit posts
+=== 4/28
+Script for download and upload of data from one cloud to another - tony
+Capistrano for ec2 deployment - srini
+
+==============
+Edit posts -  
+
+Pagination of posts 
+
+Smiley timeline Personal journal - 
+
 Fix the tabs
 
-Smiley timeline Personal journal
 Friends:
   Add friends
   view friends' journal
