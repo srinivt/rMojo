@@ -36,8 +36,8 @@ else
 end
 # DataMapper::Model.raise_on_save_failure = true
 
-# RPXTokenURL = 'http://mojo-jr.appspot.com/rpx'  # appspot
-RPXTokenURL = 'http://localhost:8080/rpx'
+RPXTokenURL = 'http://mojo-jr.appspot.com/rpx'  # appspot
+# RPXTokenURL = 'http://localhost:8080/rpx'
 
 LoginLink = "https://mojo-jr.rpxnow.com/openid/v2/signin?token_url=#{CGI.escape(RPXTokenURL)}"
 
