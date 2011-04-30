@@ -245,8 +245,7 @@ form#edit_entry.entry .smiley-strip {
 
 .smiley-strip .smi {
   float: left;
-	margin: 0 0.7em;
-	padding: 0.4em 0.6em;
+	padding: 0.4em 1.2em;
   padding-bottom: 0;
   opacity: 0.3;
 }

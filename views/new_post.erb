@@ -4,9 +4,8 @@
 
   <div id='smiley-strip' class='smiley-strip'>
     <% Post::Smileys.reverse.each do |s| %>
-      <div class='s-<%= s %> smi <%= 'selected' if s == Post::DefaultSmiley %>'>
-        <img class='s-i-<%= s %> smi-i' src='../static/smi/<%= s %>.png'
-          onmouseover='selectSmiley("new_entry", "<%= s %>")'>
+      <div class='s-<%= s %> smi <%= 'selected' if s == Post::DefaultSmiley %>' onmouseover='selectSmiley("new_entry", "<%= s %>")'>
+        <img class='s-i-<%= s %> smi-i' src='../static/smi/<%= s %>.png'>
         <input class='b-<%= s %>' style='display:<%= s == Post::DefaultSmiley ? "show" : "none" %>'
           type='submit' value='Post' />
       </div>
