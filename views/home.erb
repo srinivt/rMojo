@@ -13,7 +13,7 @@
   <link href='http://fonts.googleapis.com/css?family=Cuprum' rel='stylesheet' type='text/css'>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js"></script>
-  <script type='text/javascript' src='../static/jquery.defaultText.js'></script> 
+  <script type='text/javascript' src='../static/jquery.autogrow.js'></script> 
   <script type='text/javascript' src='../static/app.js'></script> 
 </head>
 
@@ -61,8 +61,6 @@
     <% end %>
   </div>
 
-  <script> $.defaultText(); </script>
-
   <script type="text/javascript">
     var rpxJsHost = (("https:" == document.location.protocol) ? "https://" : "http://static.");
     document.write(unescape("%3Cscript src='" + rpxJsHost +
@@ -72,6 +70,8 @@
   <script type="text/javascript">
       RPXNOW.overlay = true;
       RPXNOW.language_preference = 'en';
+      
+      $(document).ready(function(){ $.each($("textarea"), function(i, v) { $(v).autoGrow(); }); });
     </script>
 
 </body>
