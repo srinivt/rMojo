@@ -67,6 +67,14 @@ h1, h2, h3, h4, h5 {
 	border: none !important;
 }
 
+.logo a {
+  text-decoration: none;
+}
+
+.logo:hover {
+  text-shadow: 1px 1px 10px #999;
+}
+
 .logo .mojo {
 	padding-top: 0.5em;
 }
@@ -185,13 +193,17 @@ h1, h2, h3, h4, h5 {
 	margin: 0  10px;
 }
 
-#new_entry {
+.entry {
   position: relative;
-  margin-bottom: 8em;
+  margin-bottom: 4em;
 }
 
-form#new_entry textarea {
-	height: 60px;
+#edit_entry.entry {
+  margin-bottom: 2em;
+}
+
+form.entry textarea {
+	height: 75px;
 	width: 550px;
 	font-size: +2em;
 	border-radius: 4px;
@@ -202,33 +214,36 @@ form#new_entry textarea {
 	position: relative;;
 }
 
-form#new_entry input[type='submit'] {
+form.entry input[type='submit'] {
   vertical-align: top;
   margin-top:10px;
   font-weight: bold;
 }
 
-form#new_entry #smiley-strip {
+form.entry .smiley-strip {
 	float: left;
-	position: absolute;
-	top: 85px;
-  left: 50px;
+	margin-top: -5px;
+	margin-left: 35px;
 }
 
-#smiley-strip .selected {
+form#edit_entry.entry .smiley-strip {
+  left: 20px;
+}
+
+.smiley-strip .selected {
 	background: #efefef;
-	border-radius: -4px -4px 4px 4px;
+	border-radius: 0 0 6px 6px;
 	background-image: -webkit-gradient(linear, left top,
 		 left bottom, color-stop(0, #efefef), color-stop(1, gray));
 	background-image: -moz-linear-gradient(top, #efefef, gray);
   opacity: 1 !important;
 }
 
-#smiley-strip:hover .smi {
+.smiley-strip:hover .smi {
   opacity: 0.45;
 }
 
-#smiley-strip .smi {
+.smiley-strip .smi {
   float: left;
 	margin: 0 0.7em;
 	padding: 0.4em 0.6em;
@@ -272,6 +287,29 @@ img.smi {
 	line-height: 0.8em;
 }
 
+.message .msg-icon {
+  float: left;
+  display:none;
+  padding: 2px;
+  border-radius: 3px;
+}
+
+.message:hover .msg-icon {
+  display: block;
+}
+
+.message .msg-icon:hover {
+  background: #333;
+  cursor: pointer;
+}
+
+.message .msg-icon div {
+  background-image:url("../static/images/ui-icons_888888_256x240.png"); 
+  background-position: -64px -113px; 
+  height: 15px; 
+  width: 15px;
+}
+
 .happy, .biggrin, .smile {
 	color: #58AA00 !important;
 }
@@ -290,35 +328,33 @@ img.smi {
 }
 
 
-.friend-message {
+.right-row {
 	clear: both;
 	margin: 15px 0;
 }
 
-.friend-message .text {
+.right-row .text {
 	width: 270px;
 }
 
-.friend-message .smi {
+.right-row .smi {
 	width: 25px;
 	height: 25px;
+	float: left;
 }
 
-.friend-message .text span {
-	color: yellow;
-	line-height: 0.8em;
+.right-row.quote .smi {
+  margin-left: 20px;
+  margin-top: 10px;
 }
 
-.friend-message .text span.sad {
-	color: #777;
-}
-
-.friend-message .text span.neutral {
-	color: orange;
+.right-row .text-quote {
+	margin-left: 65px;
+	margin-top: 50px;
 }
 
 /*http://htmlhelp.com/cgi-bin/color.cgi*/
-.friend-message .time {
+.right-row .time {
 	margin: 1px 3px 0 0;color: grey; clear: both
 }
 
@@ -368,7 +404,7 @@ img.smi {
 .info_box li h2, .info_box li h3 {
   font-family: Cuprum, "Helvetica", "Arial", sans;
   font-weight: bold;
-  text-shadow: 2px 2px 2px #121212;
+  text-shadow: 2px 2px 12px #222;
   text-transform: capitalize;
 }
 
@@ -376,4 +412,12 @@ img.smi {
   font-size: 1.4em;
   font-weight: normal;
   color: #ccc;
+}
+
+.ui-dialog-titlebar {
+  display:none;
+}
+
+.ui-dialog.ui-corner-all {
+  border-radius: 10px;
 }

@@ -1,31 +1,13 @@
-<script>
-   function selectSmiley(name) {
-     $.each($("#smiley-strip .smi"), function(i, v) { $(v).removeClass('selected'); });
-     $.each($("#smiley-strip input[type=submit]"), function(i, v) { $(v).hide() });
-     $("#s-" + name).addClass('selected');
-     $("#smiley-value").val(name);
-     $("#b-" + name).show();
-   }
-   
-   function checkform() {
-     if ($("textarea[name=message]").val().trim().length == 0) {
-      alert("Can't post a blank message for you.. No, never!");
-      return false;
-    }
-    return true;
-   }
- </script>
+<form class='entry clearfix' id='new_entry' method='post' onsubmit='if (!checkform("new_entry")) { $("textarea[name=message]").focus(); return false; }'>
+  <textarea name='message' id='new_entry_message'></textarea>
+  <input type='hidden' class='smiley-value' name='smiley' value='<%= Post::DefaultSmiley %>' />
 
-<form class='clearfix' id='new_entry' method='post' onsubmit='if (!checkform()) { $("textarea[name=message]").focus(); return false; }'>
-  <textarea name='message' id='new_entry_message" title='Whats in your mind?'></textarea>
-  <input type='hidden' id='smiley-value' name='smiley' value='<%= Post::DefaultSmiley %>' />
-
-  <div id='smiley-strip'>
+  <div id='smiley-strip' class='smiley-strip'>
     <% Post::Smileys.reverse.each do |s| %>
-      <div id='s-<%= s %>' class='smi <%= 'selected' if s == Post::DefaultSmiley %>'>
-        <img id='s-i-<%= s %>' class='smi-i' src='../static/smi/<%= s %>.png'
-          onmouseover='selectSmiley("<%= s %>")'>
-        <input id='b-<%= s %>' style='display:<%= s == Post::DefaultSmiley ? "show" : "none" %>'
+      <div class='s-<%= s %> smi <%= 'selected' if s == Post::DefaultSmiley %>'>
+        <img class='s-i-<%= s %> smi-i' src='../static/smi/<%= s %>.png'
+          onmouseover='selectSmiley("new_entry", "<%= s %>")'>
+        <input class='b-<%= s %>' style='display:<%= s == Post::DefaultSmiley ? "show" : "none" %>'
           type='submit' value='Post' />
       </div>
     <% end %>

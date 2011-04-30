@@ -12,10 +12,12 @@ sudo apt-get install mongodb-10gen
 # Install the necessary gems:
 gem install json
 gem install dm-core -v 1.1.0
-gem install dm-aggregates -v 1.1.0
-gem install mongo -v 1.2.4  
 gem install dm-validations
+gem install dm-aggregates -v 1.1.0
+
+gem install mongo -v 1.2.4  
 gem install dm-mongo-adapter
+
 gem install sinatra  
 gem install httpclient
   

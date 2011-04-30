@@ -22,17 +22,16 @@ enable :sessions
 if RUBY_PLATFORM == "java"
   DataMapper.setup(:default, "appengine://auto")
 else
+  DB_NAME = 'meta_mojo'
   DataMapper.setup(:default,
     :adapter  => 'mongo',
-    :database => 'meta_mojo'
+    :database => DB_NAME
   )
   
-  class User < String
-    # Placeholder for Mongodb.
-    # User object just holds the email address
-  end
-  
-  class ByteString < String; end
+  # Placeholder for Mongodb.
+  # User object just holds the email address
+  class User < String; end
+  class ByteString < String; end  
 end
 # DataMapper::Model.raise_on_save_failure = true
 
@@ -47,11 +46,12 @@ class Post
   
   include DataMapper::Resource
 
-  property :id, Serial
   if RUBY_PLATFORM == 'java'
+    property :id, Serial
     property :user, User, :required => true
     property :smiley, ByteString, :required => true
   else
+    property :id, ObjectId
     property :user, String, :required => true
     property :smiley, String, :required => true
   end
@@ -100,16 +100,28 @@ get '/' do
 end
 
 post '/' do
-  # handle blank messages
-  p = Post.create(:message => params[:message],
-              :user => current_user,
-              :smiley => params[:smiley] || Post::DefaultSmiley,
-              :created_at => Time.now )
+  if params[:id]
+    p = Post.get(params[:id])
+    # TODO: Add authorization to prevent updates to unowned posts
+    if p
+      if !p.update(:message => params[:message], :smiley => params[:smiley])
+        raise "Post Can't be saved! - #{p.errors.inspect}"
+        redirect '/?error=not-saved'
+      end
+    end
+  else
+    # TODO: handle blank messages
+    p = Post.create(:message => params[:message],
+                :user => current_user,
+                :smiley => params[:smiley] || Post::DefaultSmiley,
+                :created_at => Time.now)
+  end
+  
   if p.saved?
     redirect '/'
   else
-    flash[:message] = "Give me something to save!!"
-    redirect '/'
+    raise "Post Can't be saved! - #{p.errors.inspect}"
+    redirect '/?error=not-saved'
   end
 end
 
@@ -149,8 +161,6 @@ helpers do
   end
 
   def email_from_data(info)
-    puts info.to_yaml
-
     raise "Stat fail" unless info["stat"] == "ok"
 
     if info["profile"]

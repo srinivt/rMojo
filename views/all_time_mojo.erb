@@ -1,32 +1,32 @@
 <h2 class='title'> Your All-time Mojo! </h2>
 
-<div class='friend-message  clearfix'>
+<div class='right-row clearfix'>
   <!-- start with mojo meter of 1 instead of all 0's? -->
   <div class='mojo-count happy'> { <%= @scounts['biggrin'] %>, <%= @scounts['smile'] %> } </div>  
- <img class='smi' style='float:left;' src='../static/smi/biggrin.png'>
- <img class='smi' style='float:left;' src='../static/smi/smile.png'>'S
+  <img class='smi' src='../static/smi/biggrin.png'>
+  <img class='smi' src='../static/smi/smile.png'>'S
 </div>
 
-<div class='friend-message  clearfix'>
+<div class='right-row  clearfix'>
   <div class='mojo-count neutral'> <%= @scounts['dry'] %> </div>  
- <img class='smi' style='float:left;' src='../static/smi/dry.png'>'S
+  <img class='smi' src='../static/smi/dry.png'>'S
 </div>
 
-<div class='friend-message  clearfix'>
+<div class='right-row  clearfix'>
   <div class='mojo-count sad'> { <%= @scounts['sad'] %>, <%= @scounts['tears'] %> } </div>  
- <img class='smi' style='float:left;' src='../static/smi/sad.png'>
- <img class='smi' style='float:left;' src='../static/smi/tears.png'>'S
+  <img class='smi' src='../static/smi/sad.png'>
+  <img class='smi' src='../static/smi/tears.png'>'S
 </div>
 
 <!-- qotd based on user's last post -->
-<div class='friend-message  clearfix'>
-  <img class='smi' style='float:left;' src='../static/smi/dry.png'>
-  <div class='text' style="float: left; margin-left: 10px">
+<div class='right-row quote clearfix'>
+  <img class='smi' src='../static/smi/dry.png'>
+  <div class='text-quote'>
     <span class='neutral'>
-      Whatever happens, life has to go on - Lao Tzu
+      If you do not change direction, you may end up where you are heading.
     </span>
     <div class='time'>
-      <a href='#'>tony</a> posted 2 days ago
+      <a href='http://en.wikipedia.org/wiki/Laozi' target="_blank">Lao Tzu</a> posted about 2300 years ago
     </div>
   </div>
 </div>

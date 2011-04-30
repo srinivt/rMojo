@@ -1,14 +1,18 @@
 <% if @posts.size > 0 %>
   <% @posts.each do |s| %>
-    <div class='message  clearfix'>
+  <div class='message clearfix' id='post-<%= s.id %>'onclick=>
       <img class='smi' style='float:left;' src='../static/smi/<%= s.smiley %>.png'>
       <div class='text' style="float: left; margin-left: 10px">
-        <span class='<%= s.smiley %>'>
+        <span class='<%= s.smiley %>' id='post-msg-<%= s.id %>'>
           <%= s.message %>
         </span>
-        <div class='time' >
+        <div class='time'>
           posted <%= time_dist(s.created_at) %> ago
         </div>
+      </div>
+      
+      <div class='msg-icon'>
+        <div onclick='toggleEdit("<%= s.id %>")'></div>
       </div>
     </div>
   <% end %>
@@ -20,3 +24,31 @@
       by posting a happy message first :) </h3>
   </center>
 <% end %>
+
+<div id='edit_entry' style='display:none' class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-draggable">
+   <div class="ui-dialog-content ui-widget-content" id="dialog">
+    
+    <form class='entry clearfix' id='edit_entry' method='post' onsubmit='if (!checkform("edit_entry")) { $("#edit_entry textarea[name=message]").focus(); return false; }'>
+      <textarea name='message' id='edit_entry_message'></textarea>
+      <input type='hidden' name='smiley' value='<%= Post::DefaultSmiley %>' />
+      <input type='hidden' name='id' value='-1' />
+
+      <div id='edit-smiley-strip' class='smiley-strip'>
+        <% Post::Smileys.reverse.each do |s| %>
+          <div class='s-<%= s %> smi <%= 'selected' if s == Post::DefaultSmiley %>'>
+            <img class='s-i-<%= s %> smi-i' src='../static/smi/<%= s %>.png'
+            onmouseover='selectSmiley("edit_entry", "<%= s %>")'>
+            <input class='b-<%= s %>' style='display:<%= s == Post::DefaultSmiley ? "show" : "none" %>'
+            type='submit' value='Update' />
+          </div>
+        <% end %>
+      </div>
+      
+      <div class="ui-dialog-buttonset" style='float: right; margin: 1em 1em 0 0;'>
+        <button type="button" onclick='$("#edit_entry").dialog("close");' class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false">
+          <span class="ui-button-text">cancel</span>
+        </button>
+      </div>
+    </form>
+   </div>
+</div>

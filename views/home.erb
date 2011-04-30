@@ -7,18 +7,21 @@
 	<title>Meta-Mojo - Srini</title>
   <link href="../static/ie.css" media="screen" rel="stylesheet" type="text/css" />
   <link href="../static/screen.css" media="screen" rel="stylesheet" type="text/css" />
+  <link href="../static/jquery-ui-custom.css" media="screen" rel="stylesheet" type="text/css" />
   <link href="../static/mm.css" media="screen" rel="stylesheet" type="text/css" />
   <link href='http://fonts.googleapis.com/css?family=Slackey' rel='stylesheet' type='text/css'>
   <link href='http://fonts.googleapis.com/css?family=Cuprum' rel='stylesheet' type='text/css'>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js"></script>
   <script type='text/javascript' src='../static/jquery.defaultText.js'></script> 
+  <script type='text/javascript' src='../static/app.js'></script> 
 </head>
 
 <body>
   <div id='whoami-wrapper'>
     <div id='whoami'>
       <div class='menuitem logo'>
-        <div class='mojo happy'> Meta Mojo </div>
+        <a href='/'><div class='mojo happy'>  Meta Mojo </div> </a>
       </div>
     
       <% if logged_in? %>
