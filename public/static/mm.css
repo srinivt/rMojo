@@ -280,6 +280,8 @@ img.smi {
 
 .message .text {
 	width: 495px;
+	padding-bottom: 10px;
+	border-bottom: 1px dashed #222;
 }
 
 .message .text span {
