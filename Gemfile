@@ -1,3 +1,6 @@
+# This is only for AppEngine setup currenly. Need to come up
+# with an better way of making this work on EC2 too!
+
 # Critical default settings:
 disable_system_gems
 disable_rubygems

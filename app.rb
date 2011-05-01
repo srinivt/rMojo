@@ -37,14 +37,16 @@ end
 # DataMapper::Model.raise_on_save_failure = true
 
 if settings.environment == :production
-  HostName = 'mojo-jr.appspot.com'  # appspot
-  # TODO: Make this ec2 ready too
+  if RUBY_PLATFORM == 'java'
+    HostName = 'mojo-jr.appspot.com'  # appspot
+  else
+    HostName = 'ec2-184-72-154-18.compute-1.amazonaws.com'
+  end
 else
   HostName = 'localhost:8080'
 end
 
 RPXTokenURL = "http://#{HostName}/rpx"
-
 LoginLink = "https://mojo-jr.rpxnow.com/openid/v2/signin?token_url=#{CGI.escape(RPXTokenURL)}"
 
 class Post
