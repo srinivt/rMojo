@@ -36,8 +36,14 @@ end
 
 # DataMapper::Model.raise_on_save_failure = true
 
-# RPXTokenURL = 'http://mojo-jr.appspot.com/rpx'  # appspot
-RPXTokenURL = 'http://localhost:8080/rpx'
+if settings.environment == :production
+  HostName = 'mojo-jr.appspot.com'  # appspot
+  # TODO: Make this ec2 ready too
+else
+  HostName = 'localhost:8080'
+end
+
+RPXTokenURL = "http://#{HostName}/rpx"
 
 LoginLink = "https://mojo-jr.rpxnow.com/openid/v2/signin?token_url=#{CGI.escape(RPXTokenURL)}"
 
