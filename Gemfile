@@ -17,3 +17,5 @@ gem 'json-jruby'
 gem 'jruby-openssl'
 
 gem "rack-openid"
+
+gem "aws-s3"

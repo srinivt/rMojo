@@ -5,6 +5,15 @@ require 'json'
 require 'cgi'
 require 'dm-core'
 require 'dm-validations'
+require 'aws/s3'
+require 'keys'  #keys is a secure file!  it is not to be checked in
+
+include AWS::S3
+
+AWS::S3::Base.establish_connection!(
+  :access_key_id	 => AMAZON_ACCESS_ID,
+  :secret_access_key => AMAZON_SECRET_KEY
+)
 
 if RUBY_PLATFORM == 'java'
   require 'appengine-apis/urlfetch'
@@ -45,7 +54,7 @@ class Post
   DefaultSmiley = 'smile'
   
   include DataMapper::Resource
-
+  
   if RUBY_PLATFORM == 'java'
     property :id, Serial
     property :user, User, :required => true
@@ -63,8 +72,6 @@ class Post
 end
 
 post '/rpx' do
-  api_key = '50909eae58912fec7bd2983493eb82062348a872'
-
   if params[:token].nil?
     return "<h1> Maaaaaaaaaaaa! Please allow me <a href='/'>access</a>! </h1>"
   end
@@ -73,7 +80,7 @@ post '/rpx' do
   query = { 
     'token' => params[:token], 
     'format' => "json",
-    'apiKey' => api_key
+    'apiKey' => RPX_API_KEY
   }
 
   resp = JSON.load(url_fetch(url, query))
@@ -89,6 +96,60 @@ get "/logout" do
   session[:current_user] = nil
   redirect "/"
 end
+
+get "/copy_to_s3" do
+  
+  text = "<pre>"
+  
+  post_json= Post.all.collect do |x| 
+        y = x.attributes
+		y.delete(:id)
+		y
+  end.to_json
+  
+  S3Object.store(
+    "post",
+	post_json,
+	'meta-mojo'
+  )
+  
+  #post_arr = JSON.parse(post_json)
+ 
+
+  
+	#post_arr.each() do |item| 
+  
+    #item.each() do |k,v|
+	# 	text+=k.to_s+" " +v.to_s+"\n"  
+    #end
+	    
+	    #Post.create(item) 
+	#end
+  
+  
+  text += "</pre>"
+  #redirect '/'
+  
+end
+
+get "/copy_from_s3" do
+  post_json = S3Object.find 'post', 'meta-mojo'
+  
+  post_arr = JSON.parse(post_json.value)
+  
+  Post.all.destroy
+  
+  post_arr.each() do |item|
+	Post.create(item)
+  end
+  
+  ""
+end
+
+get "/delete_all_data" do
+  Post.all.destroy
+end
+
 
 get '/' do
   @scounts = Hash.new
@@ -114,7 +175,7 @@ post '/' do
     p = Post.create(:message => params[:message],
                 :user => current_user,
                 :smiley => params[:smiley] || Post::DefaultSmiley,
-                :created_at => Time.now)
+                :created_at => Time.now.to_s)
   end
   
   if p.saved?
