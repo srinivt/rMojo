@@ -159,7 +159,7 @@ helpers do
         q = q.filter("user", '==', current_user).filter("smiley", '==', s)
         h[s] = q.count
       else
-        h[s] = Post.count(:smiley => s)
+        h[s] = Post.count(:smiley => s, :user => current_user)
       end      
     end
     return h
