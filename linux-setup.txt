@@ -20,5 +20,17 @@ gem install dm-mongo-adapter
 
 gem install sinatra  
 gem install httpclient
+
+gem install passenger
+
+# Capistrano for deployment - needs to be installed only at the dev machine
+# from which to deploy. Not needed in production
+gem install capistrano
   
 # TODO: Figure out how to use bundler to bundle these things up
+
+# Linux to watch out
+#   Web server deployment
+#   Monitoring
+#   Logging
+#   

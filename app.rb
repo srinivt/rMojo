@@ -42,11 +42,20 @@ else
   class User < String; end
   class ByteString < String; end  
 end
+
 # DataMapper::Model.raise_on_save_failure = true
 
-# RPXTokenURL = 'http://mojo-jr.appspot.com/rpx'  # appspot
-RPXTokenURL = 'http://localhost:8080/rpx'
+if settings.environment == :production
+  if RUBY_PLATFORM == 'java'
+    HostName = 'mojo-jr.appspot.com'  # appspot
+  else
+    HostName = 'ec2-184-72-154-18.compute-1.amazonaws.com'
+  end
+else
+  HostName = 'localhost:8080'
+end
 
+RPXTokenURL = "http://#{HostName}/rpx"
 LoginLink = "https://mojo-jr.rpxnow.com/openid/v2/signin?token_url=#{CGI.escape(RPXTokenURL)}"
 
 class Post
@@ -211,7 +220,7 @@ helpers do
         q = q.filter("user", '==', current_user).filter("smiley", '==', s)
         h[s] = q.count
       else
-        h[s] = Post.count(:smiley => s)
+        h[s] = Post.count(:smiley => s, :user => current_user)
       end      
     end
     return h

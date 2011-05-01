@@ -22,6 +22,7 @@
     <div id='whoami'>
       <div class='menuitem logo'>
         <a href='/'><div class='mojo happy'>  Meta Mojo </div> </a>
+        <small>@ <%= RUBY_PLATFORM == 'java' ? "gae" : "ec2" %></small>
       </div>
     
       <% if logged_in? %>
