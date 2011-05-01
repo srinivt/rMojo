@@ -5,16 +5,21 @@ Mojo-meter - tony
 Make the app Datastore-agnostic - srini
 Login page - srini
 Edit posts
+Capistrano for ec2 deployment - srini
+Script for download and upload of data from one cloud to another - tony
 
 TODO:
 
-=== 4/28
-Script for download and upload of data from one cloud to another - tony
-Capistrano for ec2 deployment - srini
+=== 5/1
+Auth for cron import and export - right now anyone is able to import and export - tony
+Timestamping the imports and exports - tony
+Restore from an arbitrary named db backup - tony
+Setup Cron at GAE - tony
 
-Auth for cron import and export
-Cap utils for easy import and export
-Script to launch ec2 instance and get it running 
+cap tasks for:
+  Easy new machine setup - srini
+  Cron job setup in the ec2 instance - srini
+Script to launch ec2 instance and get it running - srini
 
 ==============
 
