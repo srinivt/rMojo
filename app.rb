@@ -33,6 +33,7 @@ else
   class User < String; end
   class ByteString < String; end  
 end
+
 # DataMapper::Model.raise_on_save_failure = true
 
 # RPXTokenURL = 'http://mojo-jr.appspot.com/rpx'  # appspot
