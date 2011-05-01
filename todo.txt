@@ -1,8 +1,10 @@
+Done:
 Authentication - done
 Get a sinatra-ready ec2 instance running - tony
 Mojo-meter - tony
 Make the app Datastore-agnostic - srini
 Login page - srini
+Edit posts
 
 TODO:
 
@@ -10,8 +12,11 @@ TODO:
 Script for download and upload of data from one cloud to another - tony
 Capistrano for ec2 deployment - srini
 
+Auth for cron import and export
+Cap utils for easy import and export
+Script to launch ec2 instance and get it running 
+
 ==============
-Edit posts -  
 
 Pagination of posts 
 

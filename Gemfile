@@ -18,7 +18,4 @@ gem 'sinatra-reloader'
 gem 'jruby-rack', "1.0.4"
 gem 'json-jruby'
 gem 'jruby-openssl'
-
-gem "rack-openid"
-
 gem "aws-s3"

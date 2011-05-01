@@ -6,26 +6,32 @@ sudo apt-get install ruby1.8-dev
 # Install MongoDb
 # http://www.mongodb.org/display/DOCS/Ubuntu+and+Debian+packages
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10
-deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen
+
+sudo echo "deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen" >> /etc/apt/sources.list
 sudo apt-get install mongodb-10gen
 
+# Install and setup passenger
+sudo echo "deb http://apt.brightbox.net hardy main" >> /etc/apt/sources.list
+sudo apt-get install libapache2-mod-passenger
+
 # Install the necessary gems:
-gem install json
-gem install dm-core -v 1.1.0
-gem install dm-validations
-gem install dm-aggregates -v 1.1.0
+sudo gem install dm-core -v 1.1.0 --no-ri --no-rdoc
+sudo gem install dm-validations --no-ri --no-rdoc
+sudo gem install dm-aggregates -v 1.1.0 --no-ri --no-rdoc
+sudo gem install mongo -v 1.2.4   --no-ri --no-rdoc
+sudo gem install dm-mongo-adapter --no-ri --no-rdoc
 
-gem install mongo -v 1.2.4  
-gem install dm-mongo-adapter
+sudo gem install sinatra   --no-ri --no-rdoc
+sudo gem install httpclient --no-ri --no-rdoc
+sudo gem install aws-s3 --no-ri --no-rdoc
+sudo gem install json --no-ri --no-rdoc
 
-gem install sinatra  
-gem install httpclient
-
-gem install passenger
+sudo gem install passenger --no-ri --no-rdoc
+sudo /var/lib/gems/1.8/gems/passenger-3.0.7/bin/passenger-install-apache2-module
 
 # Capistrano for deployment - needs to be installed only at the dev machine
 # from which to deploy. Not needed in production
-gem install capistrano
+# sudo gem install capistrano --no-ri --no-rdoc
   
 # TODO: Figure out how to use bundler to bundle these things up
 
@@ -34,3 +40,10 @@ gem install capistrano
 #   Monitoring
 #   Logging
 #   
+
+# Add this if passenger won't start
+# sudo gem install bundler --prerelease
+
+# Setup cron job
+# echo "*/4 * * * * "> /etc/cron.daily or something like that
+# TBD

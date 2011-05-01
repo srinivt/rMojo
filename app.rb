@@ -1,25 +1,30 @@
 require 'rubygems'
 require 'sinatra'
-require 'sinatra/reloader' if development?
 require 'json'
 require 'cgi'
 require 'dm-core'
 require 'dm-validations'
 require 'aws/s3'
-require 'keys'  #keys is a secure file!  it is not to be checked in
 
-include AWS::S3
+#keys is a secure file!  it is not to be checked in
+load File.dirname(__FILE__) + '/keys.rb'
 
-AWS::S3::Base.establish_connection!(
-  :access_key_id	 => AMAZON_ACCESS_ID,
-  :secret_access_key => AMAZON_SECRET_KEY
-)
+if development?
+  require 'ruby-debug' if RUBY_PLATFORM != 'java'
+  require 'sinatra/reloader'
+end
 
 if RUBY_PLATFORM == 'java'
   require 'appengine-apis/urlfetch'
   require 'appengine-apis/datastore'
+  
+  DataMapper.setup(:default, "appengine://auto")
+  HostName = 'mojo-jr.appspot.com'
 else
   require 'httpclient'
+  
+  DataMapper.setup(:default, "mongo://localhost/meta_mojo")
+  HostName = EC2_INSTANCE
 end
 
 configure do
@@ -28,33 +33,7 @@ end
 
 enable :sessions
 
-if RUBY_PLATFORM == "java"
-  DataMapper.setup(:default, "appengine://auto")
-else
-  DB_NAME = 'meta_mojo'
-  DataMapper.setup(:default,
-    :adapter  => 'mongo',
-    :database => DB_NAME
-  )
-  
-  # Placeholder for Mongodb.
-  # User object just holds the email address
-  class User < String; end
-  class ByteString < String; end  
-end
-
-# DataMapper::Model.raise_on_save_failure = true
-
-if settings.environment == :production
-  if RUBY_PLATFORM == 'java'
-    HostName = 'mojo-jr.appspot.com'  # appspot
-  else
-    HostName = 'ec2-184-72-154-18.compute-1.amazonaws.com'
-  end
-else
-  HostName = 'localhost:8080'
-end
-
+HostName = 'localhost:8080' if development?
 RPXTokenURL = "http://#{HostName}/rpx"
 LoginLink = "https://mojo-jr.rpxnow.com/openid/v2/signin?token_url=#{CGI.escape(RPXTokenURL)}"
 
@@ -64,6 +43,7 @@ class Post
   
   include DataMapper::Resource
   
+  # TODO: Clen this up by making the properties inherit from parent?
   if RUBY_PLATFORM == 'java'
     property :id, Serial
     property :user, User, :required => true
@@ -94,10 +74,8 @@ post '/rpx' do
 
   resp = JSON.load(url_fetch(url, query))
 
+  # TODO: other open id providers
   session[:current_user] = email_from_data(resp)
-
-  # What is the email 
-  # set the user id in session!!
   redirect "/"
 end
 
@@ -116,10 +94,11 @@ get '/' do
 end
 
 post '/' do
+  redirect "/" unless logged_in?
+  
   if params[:id]
-    p = Post.get(params[:id])
-    # TODO: Add authorization to prevent updates to unowned posts
-    if p
+    if (p = Post.get(params[:id]))
+      raise "Auth error" unless p.user == current_user
       if !p.update(:message => params[:message], :smiley => params[:smiley])
         raise "Post Can't be saved! - #{p.errors.inspect}"
         redirect '/?error=not-saved'
@@ -141,26 +120,35 @@ post '/' do
   end
 end
 
-# Util for backups
+# Utils for backups
 get "/copy_to_s3" do  
+  AWS::S3::Base.establish_connection!(
+    :access_key_id	 => AMAZON_ACCESS_ID,
+    :secret_access_key => AMAZON_SECRET_KEY
+  )
+
   post_json= Post.all.collect do |x| 
     y = x.attributes
 		y.delete(:id)
 		y
   end.to_json
-  S3Object.store( "post", post_json, 'meta-mojo')
   
+  AWS::S3::S3Object.store( "post", post_json, 'meta-mojo')
   "Done!"
 end
 
-# Util for backups
+# Utils for backups
 get "/copy_from_s3" do
-  post_json = S3Object.find 'post', 'meta-mojo'
+  AWS::S3::Base.establish_connection!(
+    :access_key_id	 => AMAZON_ACCESS_ID,
+    :secret_access_key => AMAZON_SECRET_KEY
+  )
+
+  post_json = AWS::S3::S3Object.find 'post', 'meta-mojo'
   post_arr = JSON.parse(post_json.value)
   
   Post.all.destroy  
   post_arr.each { Post.create(item) }
-  
   "Done!"
 end
 
@@ -242,7 +230,7 @@ helpers do
     elsif dist < 7
       return "about #{dist} days"
     elsif dist <= 30
-      return "about #{dist} week#{'s' if dist / 7 > 1}"
+      return "about #{dist / 7} week#{'s' if dist / 7 > 1}"
     elsif dist <= 365
       return "about #{dist / 30} month#{'s' if dist / 30 > 1}"
     end
