@@ -106,60 +106,6 @@ get "/logout" do
   redirect "/"
 end
 
-get "/copy_to_s3" do
-  
-  text = "<pre>"
-  
-  post_json= Post.all.collect do |x| 
-        y = x.attributes
-		y.delete(:id)
-		y
-  end.to_json
-  
-  S3Object.store(
-    "post",
-	post_json,
-	'meta-mojo'
-  )
-  
-  #post_arr = JSON.parse(post_json)
- 
-
-  
-	#post_arr.each() do |item| 
-  
-    #item.each() do |k,v|
-	# 	text+=k.to_s+" " +v.to_s+"\n"  
-    #end
-	    
-	    #Post.create(item) 
-	#end
-  
-  
-  text += "</pre>"
-  #redirect '/'
-  
-end
-
-get "/copy_from_s3" do
-  post_json = S3Object.find 'post', 'meta-mojo'
-  
-  post_arr = JSON.parse(post_json.value)
-  
-  Post.all.destroy
-  
-  post_arr.each() do |item|
-	Post.create(item)
-  end
-  
-  ""
-end
-
-get "/delete_all_data" do
-  Post.all.destroy
-end
-
-
 get '/' do
   @scounts = Hash.new
   if logged_in?
@@ -194,6 +140,30 @@ post '/' do
     redirect '/?error=not-saved'
   end
 end
+
+# Util for backups
+get "/copy_to_s3" do  
+  post_json= Post.all.collect do |x| 
+    y = x.attributes
+		y.delete(:id)
+		y
+  end.to_json
+  S3Object.store( "post", post_json, 'meta-mojo')
+  
+  "Done!"
+end
+
+# Util for backups
+get "/copy_from_s3" do
+  post_json = S3Object.find 'post', 'meta-mojo'
+  post_arr = JSON.parse(post_json.value)
+  
+  Post.all.destroy  
+  post_arr.each { Post.create(item) }
+  
+  "Done!"
+end
+
 
 helpers do
   def url_fetch(url, query)
