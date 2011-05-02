@@ -1,18 +1,18 @@
 # Linux todo:
 
 # Install ruby-dev packages
-sudo apt-get install ruby1.8-dev
+sudo apt-get install ruby1.8-dev -y
 
 # Install MongoDb
 # http://www.mongodb.org/display/DOCS/Ubuntu+and+Debian+packages
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10
 
 sudo echo "deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen" >> /etc/apt/sources.list
-sudo apt-get install mongodb-10gen
+sudo apt-get install mongodb-10gen -y
 
 # Install and setup passenger
 sudo echo "deb http://apt.brightbox.net hardy main" >> /etc/apt/sources.list
-sudo apt-get install libapache2-mod-passenger
+sudo apt-get install libapache2-mod-passenger -y
 
 # Install the necessary gems:
 sudo gem install dm-core -v 1.1.0 --no-ri --no-rdoc
@@ -44,6 +44,6 @@ sudo /var/lib/gems/1.8/gems/passenger-3.0.7/bin/passenger-install-apache2-module
 # Add this if passenger won't start
 # sudo gem install bundler --prerelease
 
-# Setup cron job
-# echo "*/4 * * * * "> /etc/cron.daily or something like that
-# TBD
+# Setup cron job log. Cron job is setup as part of cold deploy
+touch "/var/logs/backup.log"
+chmod 0777 /var/logs/backup.log

@@ -122,23 +122,28 @@ end
 
 # Utils for backups
 get "/copy_to_s3" do  
+  return "Not authorized!" unless params[:q] == CRON_ID
+  
   AWS::S3::Base.establish_connection!(
     :access_key_id	 => AMAZON_ACCESS_ID,
     :secret_access_key => AMAZON_SECRET_KEY
   )
 
   post_json= Post.all.collect do |x| 
+    # Hash[x.attributes.reject { |k, v| k.to_s == "id" }]
     y = x.attributes
 		y.delete(:id)
 		y
   end.to_json
   
   AWS::S3::S3Object.store( "post", post_json, 'meta-mojo')
-  "Done!"
+  "[#{Time.now}] Done!\n"
 end
 
 # Utils for backups
 get "/copy_from_s3" do
+  return "Not authorized!" unless params[:q] == CRON_ID
+  
   AWS::S3::Base.establish_connection!(
     :access_key_id	 => AMAZON_ACCESS_ID,
     :secret_access_key => AMAZON_SECRET_KEY
@@ -149,7 +154,7 @@ get "/copy_from_s3" do
   
   Post.all.destroy  
   post_arr.each { Post.create(item) }
-  "Done!"
+  "[#{Time.now}] Done!\n"
 end
 
 

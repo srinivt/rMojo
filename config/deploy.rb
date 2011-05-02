@@ -22,8 +22,8 @@ namespace :deploy do
   
   after "deploy:update_code", "deploy:remove_gem_file"
   after "deploy:setup", "deploy:own_directory"
-  after "deploy:setup", "prepare_machine"
-  after "deploy", "setup_cron"
+  after "deploy:setup", "deploy:prepare_machine"
+  after "deploy:cold", "deploy:setup_cron"
   before "deploy:restart", "deploy:copy_keys_file"
   
   task :own_directory do
@@ -31,14 +31,14 @@ namespace :deploy do
   end
   
   task :prepare_machine do
-    # TODO: For now run the script manually at EC2
-    # PUt the script at the target machine at /tmp
-    # and execute it
+    file = File.dirname(__FILE__) + "/../linux-setup.txt"
+    put(File.read( file ),"/tmp/linux-setup.sh", :via => :scp)
+    run "#{try_sudo} chmod +x /tmp/linux-setup.sh; bash /tmp/linux-setup.sh"
   end
   
   task :setup_cron do
-    # TODO: setup cron
-    # echo "*/4 * * * * "> /etc/cron.daily or something like that
+    cron_line = "30 0,6,12,18 * * * GET localhost/copy_to_s3?q=#{CRON_ID} >> /var/logs/backup.log"
+    run "#{try_sudo} echo \"#{cron_line}\" >> /etc/cron.d/backup.cron"
   end
   
   task :copy_keys_file do
