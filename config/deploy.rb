@@ -33,7 +33,7 @@ namespace :deploy do
   task :prepare_machine do
     file = File.dirname(__FILE__) + "/../linux-setup.txt"
     put(File.read( file ),"/tmp/linux-setup.sh", :via => :scp)
-    run "#{try_sudo} chmod +x /tmp/linux-setup.sh; bash /tmp/linux-setup.sh"
+    run "#{try_sudo} chmod +x /tmp/linux-setup.sh; sudo sh -c /tmp/linux-setup.sh"
   end
   
   task :setup_cron do
