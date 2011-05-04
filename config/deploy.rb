@@ -23,14 +23,24 @@ namespace :deploy do
   task :migrate do; end
   
   after "deploy:update_code", "deploy:remove_gem_file"
+  
   after "deploy:setup", "deploy:own_directory"
   after "deploy:setup", "deploy:prepare_machine"
+  
   after "deploy:cold", "deploy:setup_cron"
   after "deploy:cold", "deploy:restore_db"
   before "deploy:restart", "deploy:copy_keys_file"
   
   task :own_directory do
     run "#{try_sudo} chown -R ubuntu /u/apps/mojo-jr"
+  end
+  
+  task :gimme_keys do
+    run "rm -f /home/ubuntu/.ssh/id_rsa*"
+    run "ssh-keygen -N '' -f /home/ubuntu/.ssh/id_rsa -t rsa -q"
+    # run "exec ssh-agent bash"
+    puts "\n Add key to your github keys (https://github.com/srinivt/rMojo/admin/keys):"
+    run "cat /home/ubuntu/.ssh/id_rsa.pub"
   end
   
   task :prepare_machine do
@@ -48,6 +58,10 @@ namespace :deploy do
   
   task :restore_db do
     run "GET localhost/copy_from_s3?q=#{CRON_ID}"
+  end
+  
+  task :backup_db do
+    run "GET localhost/copy_to_s3?q=#{CRON_ID}"
   end
   
   task :copy_keys_file do
