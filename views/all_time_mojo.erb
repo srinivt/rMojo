@@ -31,6 +31,82 @@
   </div>
 </div>
 
+<!-- Add friend -->
+<h2 class='title'> Add Friend? </h2>
+<div class='right-row '>
+  <div> Type in the email of friends you'd like to invite.</div>
+  
+	<form class='' id='send_friend' method='post' action='/invite'>
+      <input type=text name="friend_email" style='width: 18em; margin: 1em; margin-left: 0'  />
+	  <input type=submit name="submit_email" value="Invite!" onSubmit="return validateInvite();" />
+    </form>
+</div>
+
+<!-- list of friends -->
+<h2 class='title'> Friends </h2>
+<div class='right-row quote clearfix'>
+    <!-- accepted friends -->
+    <%  if @friends; @friends.each do |s| %>
+
+          
+        
+            <table width="100%" >
+              <col align="left"   width="1000" style='text-align:left' />
+              <col align="right"  style='text-align:right'/>
+              <col align="right"  style='text-align:right'/>
+              <tr>
+                <td> <a href='/friend/<%= user_of(s.user).id %>' > <%= name_of(s.user) %> </a>  </td>
+                <span class='sad'>
+                <td> <a href='/reject_friend/<%= s.id %>' > unfriend </a> </td>
+                </span>
+              </tr>
+            </table>
+            
+        
+
+    <% end end %>
+    <!-- pending friends -->
+    <%  if @pending_friends; @pending_friends.each do |s| %>
+
+
+        
+            <table width="100%" >
+              <col align="left"   width="1000" style='text-align:left' />
+              <col align="right"  style='text-align:right'/>
+              <col align="right"  style='text-align:right'/>
+              <tr>
+                <td><%= name_of(s.user) %> </td>
+                <span class='happy'>
+                <td> <a href='/accept_friend/<%= s.id %>' > accept </a> </td>
+                </span> 
+                <span class='sad'>
+                <td> <a href='/reject_friend/<%= s.id %>' class='sad' > reject </a> </td>
+                </span>
+              </tr>
+            </table>
+            
+
+
+    <% end  end %>
+    <!-- requested friends -->
+    <%  if @requested_friends; @requested_friends.each do |s| %>
+
+            <table width="100%" >
+              <col align="left"   width="1000" style='text-align:left' />
+              <col align="right"  style='text-align:right'/>
+              <tr>
+                <td><%= name_of(s.user) %> (pending) </td>
+                <span class='neutral'>
+                <td> <a href='/end_friend/<%= s.id %>' > cancel </a> </td>
+                </span>
+              </tr>
+            </table>
+
+    <% end  end %>
+</div>
+
+
+
  <br>
   <br>
   <h2 class='title'> Spread the word! </h2>
@@ -39,3 +115,6 @@
 
   <a href='#'> Invite! </a>
 <div>
+
+
+

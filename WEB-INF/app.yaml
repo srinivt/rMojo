@@ -7,3 +7,14 @@ handlers:
 - url: /remote_api/*
   login: admin
   servlet: com.google.apphosting.utils.remoteapi.RemoteApiServlet
+  
+- url: /copy_to_s3
+  login: admin
+  
+- url: /copy_from_s3
+  login: admin
+  
+#cron:
+#- description: push to s3
+#  url: /copy_to_s3
+#  schedule: every 2 hours

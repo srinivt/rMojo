@@ -16,6 +16,22 @@
       <role-name>admin</role-name>
     </auth-constraint>
   </security-constraint>
+  <security-constraint>
+    <web-resource-collection>
+      <url-pattern>/copy_to_s3</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>admin</role-name>
+    </auth-constraint>
+  </security-constraint>
+  <security-constraint>
+    <web-resource-collection>
+      <url-pattern>/copy_from_s3</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>admin</role-name>
+    </auth-constraint>
+  </security-constraint>
   <filter>
     <filter-name>org.jruby.rack.RackFilter</filter-name>
     <filter-class>org.jruby.rack.RackFilter</filter-class>

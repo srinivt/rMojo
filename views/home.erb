@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-	<title>Meta-Mojo - Srini</title>
+	<title>Meta-Mojo</title>
   <link href="../static/ie.css" media="screen" rel="stylesheet" type="text/css" />
   <link href="../static/screen.css" media="screen" rel="stylesheet" type="text/css" />
   <link href="../static/jquery-ui-custom.css" media="screen" rel="stylesheet" type="text/css" />
@@ -39,7 +39,7 @@
       <% unless logged_in? %>
         <a class="rpxnow" onclick="return false;" href="<%= LoginLink %>"> Sign In </a>
       <% else %>
-        Hey, <%= session[:current_user] %>! &nbsp;&nbsp;&nbsp;
+        Hey, <%= current_user_name %>! &nbsp;&nbsp;&nbsp;
         <a href='/logout'> Logout </a>
       <% end %>
       </div>
@@ -51,7 +51,14 @@
       <%= erb :unloggedin %>
     <% else %>
       <div class='span-15' id='center'>    
-        <%= erb :new_post %>  
+        
+        <% if @friend_id == "" %>
+          <%= erb :new_post %> 
+          <h1 class='title'> My Mojo </h1>
+        <% else  %>
+          <h1 class='title'> <%= name_by_id(@friend_id) %>'s Mojo </h1>
+        <% end %>
+          
         <%= erb :posts %>
       </div>
     
