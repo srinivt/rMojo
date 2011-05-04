@@ -146,6 +146,13 @@ get '/friend/:friend_id' do
     
     friend = Mojo_User.get(@friend_id)
     
+    friendship = Friend.first(:user=>current_user, :friend=>friend.user)
+    
+    #don't let non-friends through
+    redirect '/' unless friendship and friendship.friend_state == 'accepted'
+    
+    
+    
     @posts = Post.all(:order => [:created_at.desc], :user => friend.user)
     
     @friends = Friend.all(:friend => current_user, :friend_state => 'accepted')

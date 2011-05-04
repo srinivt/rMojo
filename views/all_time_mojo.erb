@@ -57,7 +57,7 @@
               <tr>
                 <td> <a href='/friend/<%= user_of(s.user).id %>' > <%= name_of(s.user) %> </a>  </td>
                 <span class='sad'>
-                <td> <a href='/reject_friend/<%= s.id %>' > unfriend </a> </td>
+                <td> <a href='/end_friend/<%= s.id %>' > unfriend </a> </td>
                 </span>
               </tr>
             </table>
@@ -80,7 +80,7 @@
                 <td> <a href='/accept_friend/<%= s.id %>' > accept </a> </td>
                 </span> 
                 <span class='sad'>
-                <td> <a href='/reject_friend/<%= s.id %>' class='sad' > reject </a> </td>
+                <td> <a href='/end_friend/<%= s.id %>' class='sad' > reject </a> </td>
                 </span>
               </tr>
             </table>
