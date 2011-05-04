@@ -272,6 +272,8 @@ end
 
 # Utils for backups
 get "/copy_to_s3" do  
+  #return "Not authorized!" unless params[:q] == CRON_ID
+  
   if admin_logged_in?
     AWS::S3::Base.establish_connection!(
       :access_key_id     => AMAZON_ACCESS_ID,
@@ -305,16 +307,17 @@ get "/copy_to_s3" do
     AWS::S3::S3Object.store( post_name, post_json, 'meta-mojo-post')
     AWS::S3::S3Object.store( user_name, user_json, 'meta-mojo-user')
     AWS::S3::S3Object.store( friend_name, friend_json, 'meta-mojo-friend')
-    "Done!"
+    "Done!   [#{Time.now}]"
   else
     "You are not an admin!"
   end
-  
 end
 
 
 # Utils for backups
 get "/copy_from_s3" do
+  #return "Not authorized!" unless params[:q] == CRON_ID
+  
   if admin_logged_in?
     AWS::S3::Base.establish_connection!(
       :access_key_id     => AMAZON_ACCESS_ID,
@@ -345,10 +348,11 @@ get "/copy_from_s3" do
     post_arr.each { |item| Post.create(item) }
     
     
-    "Done!"
+    "Done!  [#{Time.now}]"
   else
     "You are not an admin!"
   end
+
 end
 
 
