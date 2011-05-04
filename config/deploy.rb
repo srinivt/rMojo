@@ -4,6 +4,7 @@ set :application, "mojo-jr"
 set :repository, "git@github.com:srinivt/rMojo.git" 
 
 ssh_options[:keys] = ["#{ENV['HOME']}/mojo-test.pem"]
+ssh_options[:forward_agent] = true
 
 set :scm, :git
 set :branch, 'master'
@@ -19,11 +20,13 @@ role :db,  EC2_INSTANCE, :primary => true # This is where Rails migrations will 
 namespace :deploy do
   task :start do; end
   task :stop do; end
+  task :migrate do; end
   
   after "deploy:update_code", "deploy:remove_gem_file"
   after "deploy:setup", "deploy:own_directory"
   after "deploy:setup", "deploy:prepare_machine"
   after "deploy:cold", "deploy:setup_cron"
+  after "deploy:cold", "deploy:restore_db"
   before "deploy:restart", "deploy:copy_keys_file"
   
   task :own_directory do
@@ -33,12 +36,18 @@ namespace :deploy do
   task :prepare_machine do
     file = File.dirname(__FILE__) + "/../linux-setup.txt"
     put(File.read( file ),"/tmp/linux-setup.sh", :via => :scp)
-    run "#{try_sudo} chmod +x /tmp/linux-setup.sh; sudo sh -c /tmp/linux-setup.sh"
+    run "#{try_sudo} chmod +x /tmp/linux-setup.sh"
+    run "#{try_sudo} sh -c /tmp/linux-setup.sh"
   end
   
   task :setup_cron do
-    cron_line = "30 0,6,12,18 * * * GET localhost/copy_to_s3?q=#{CRON_ID} >> /var/logs/backup.log"
-    run "#{try_sudo} echo \"#{cron_line}\" >> /etc/cron.d/backup.cron"
+    cron_line = "30 0,6,12,18 * * * GET localhost/copy_to_s3?q=#{CRON_ID} >> /var/log/backup.log"
+    put cron_line, "/tmp/cron"
+    run "#{try_sudo} cp /tmp/cron /etc/cron.d/backup.cron"
+  end
+  
+  task :restore_db do
+    run "GET localhost/copy_from_s3?q=#{CRON_ID}"
   end
   
   task :copy_keys_file do

@@ -281,7 +281,7 @@ end
 get "/copy_to_s3" do  
   #return "Not authorized!" unless params[:q] == CRON_ID
   
-  if admin_logged_in?
+  if admin_logged_in?(params[:q])
     AWS::S3::Base.establish_connection!(
       :access_key_id     => AMAZON_ACCESS_ID,
       :secret_access_key => AMAZON_SECRET_KEY
@@ -325,7 +325,7 @@ end
 get "/copy_from_s3" do
   #return "Not authorized!" unless params[:q] == CRON_ID
   
-  if admin_logged_in?
+  if admin_logged_in?(params[:q])
     AWS::S3::Base.establish_connection!(
       :access_key_id     => AMAZON_ACCESS_ID,
       :secret_access_key => AMAZON_SECRET_KEY
@@ -478,9 +478,10 @@ helpers do
     not session[:current_user].nil?
   end
 
-  def admin_logged_in? 
+  def admin_logged_in?(qid = nil)
     session[:current_user]=="tony.nowatzki@gmail.com" or 
-    session[:current_user]=="sr.iniv.t@gmail.com"
+    session[:current_user]=="sr.iniv.t@gmail.com" or
+    qid == CRON_ID
     #(RUBY_PLATFORM == 'java' and param[:X-AppEngine-Cron]==true)
   end
   
