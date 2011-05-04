@@ -25,3 +25,11 @@ function toggleEdit(id) {
     resizable: false
   });
 }
+
+valid_email_regx = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+
+function validateInvite() {
+   alert ("WOO")
+   return valid_email_regx.test($("#submit_email"));
+}
+
