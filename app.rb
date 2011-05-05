@@ -448,28 +448,28 @@ helpers do
     raise "Stat fail" unless info["stat"] == "ok"
 
     if info["profile"]
-      if info["profile"]["providerName"] == "Google"
+      if info["profile"]
         cur_email = info["profile"]["email"]
         cur_name = info["profile"]["name"]['formatted']
-        
+
         if cur_name.empty?
           cur_name = cur_email
         end
-          
+
         mu = Mojo_User.first_or_create({ :user => cur_email  }, 
         { :name => cur_name , :joined_on => Time.now.to_s, :user_state => 'joined'})
-        
+
         if mu.user_state == 'unknown'
           mu.update( {:user_state => 'joined', :name => cur_name } )
         end
-    
+
         if mu.saved?
-        return mu
+          return mu
         else
-        raise "Not Saved! - #{mu.errors.inspect}"
-        end
+          raise "Not Saved! - #{mu.errors.inspect}"
         end
       end
+    end
 
     raise "Unknown provider info!"
   end
