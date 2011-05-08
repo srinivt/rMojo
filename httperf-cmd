@@ -1,0 +1,2 @@
+./httperf --hog --server=localhost --port=8080 --uri=/start_test
+./httperf --hog --server=localhost --port=8080 --wsesslog=100,0,httperf-wlog
