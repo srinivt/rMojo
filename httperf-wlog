@@ -1,8 +1,8 @@
 # Get
-/?perf_test=1
+/?perf_test=1 think=1.0
 
 # Post
-/?perf_test=1 method=POST contents="message=This is a message&&smiley=smile"
+# /?perf_test=1 method=POST contents="message=This is a message&&smiley=smile"
 
 # Get
-/?perf_test=1
+# /?perf_test=1

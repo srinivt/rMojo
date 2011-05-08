@@ -27,11 +27,11 @@ else
   HostName = EC2_INSTANCE
 end
 
+enable :sessions, :logging
+
 configure do
   set :port, 8080
 end
-
-enable :sessions
 
 HostName = 'localhost:8080' if development?
 RPXTokenURL = "http://#{HostName}/rpx"
@@ -163,7 +163,7 @@ get '/' do
   @scounts = Hash.new
   if logged_in?
     @friend_id = ""
-    @posts = Post.all(:order => [:created_at.desc], :user => current_user, :limit => Post::PostsPerPage)
+    @posts = Post.all(:order => [:created_at.desc], :user => current_user, :limit => 5)
     @friends = Friend.all(:friend => current_user, :friend_state => 'accepted')
     @pending_friends = Friend.all(:friend => current_user, :friend_state => 'requested')
     @requested_friends = Friend.all(:friend => current_user, :friend_state => 'request_pending')
