@@ -23,7 +23,7 @@ if RUBY_PLATFORM == 'java'
 else
   require 'httpclient'
   
-  DataMapper.setup(:default, "mongo://localhost/meta_mojo")
+  DataMapper.setup(:default, "mongo://#{EC2_DB}/meta_mojo")
   HostName = EC2_INSTANCE
 end
 
