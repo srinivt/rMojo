@@ -1,7 +1,7 @@
 load File.dirname(__FILE__) + "/../keys.rb"
 
 set :application, "mojo-jr"
-set :repository, "git@github.com:srinivt/rMojo.git" 
+set :repository, "git://github.com/srinivt/rMojo.git" 
 
 ssh_options[:keys] = ["#{ENV['HOME']}/mojo-test.pem"]
 ssh_options[:forward_agent] = true
