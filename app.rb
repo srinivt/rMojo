@@ -168,7 +168,7 @@ get '/' do
     @pending_friends = Friend.all(:friend => current_user, :friend_state => 'requested')
     @requested_friends = Friend.all(:friend => current_user, :friend_state => 'request_pending')
     @mojo_name = current_user
-    @scounts = count_smileys
+    @scounts = Hash.new #count_smileys
   end
   erb :home
 end
