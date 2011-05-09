@@ -40,7 +40,7 @@ LoginLink = "https://mojo-jr.rpxnow.com/openid/v2/signin?token_url=#{CGI.escape(
 class Mojo_User
   User_States = %w(unknown joined left)
   DefaultUserState = 'unknown'
-  
+    
   include DataMapper::Resource
   
   property :user, String
@@ -61,10 +61,9 @@ end
 class Post
   Smileys = %w(tears sad dry smile biggrin)
   DefaultSmiley = 'smile'
+  PostsPerPage = 15
   
   include DataMapper::Resource
-  
-  
   
   if RUBY_PLATFORM == 'java'
     property :id, Serial
@@ -124,8 +123,6 @@ post '/rpx' do
 
   # TODO: other open id providers
   session[:current_user] = get_user_from_data(resp).user
-  
-  
   redirect "/"
 end
 
@@ -151,8 +148,6 @@ get '/friend/:friend_id' do
     #don't let non-friends through
     redirect '/' unless friendship and friendship.friend_state == 'accepted'
     
-    
-    
     @posts = Post.all(:order => [:created_at.desc], :user => friend.user)
     
     @friends = Friend.all(:friend => current_user, :friend_state => 'accepted')
@@ -164,13 +159,11 @@ get '/friend/:friend_id' do
   erb :home
 end
 
-
 get '/' do
   @scounts = Hash.new
   if logged_in?
-    
     @friend_id = ""
-    @posts = Post.all(:order => [:created_at.desc], :user => current_user)
+    @posts = Post.all(:order => [:created_at.desc], :user => current_user, :limit => Post::PostsPerPage)
     @friends = Friend.all(:friend => current_user, :friend_state => 'accepted')
     @pending_friends = Friend.all(:friend => current_user, :friend_state => 'requested')
     @requested_friends = Friend.all(:friend => current_user, :friend_state => 'request_pending')
@@ -359,13 +352,22 @@ get "/copy_from_s3" do
   else
     "You are not an admin!"
   end
-
 end
 
+get '/start_test' do
+  perf_email = 'perf_user@mojo.com'
+  perf_name = "Mojo Performentor"
+  
+  Mojo_User.first_or_create(
+    { :user => perf_email  }, 
+    { :name => perf_name , :joined_on => Time.now.to_s, :user_state => 'joined'})
+  
+  session[:current_user] = perf_email
+  redirect '/'
+end
 
 helpers do
   def get_latest(bucket)
-    
     latest_stamp=0
     latest_value=nil
     
@@ -410,7 +412,7 @@ helpers do
   end
   
   def current_user
-    session[:current_user]
+    perf_test? ? "perf_user@mojo.com" : session[:current_user]
   end
   
   def current_user_name
@@ -475,14 +477,18 @@ helpers do
   end
 
   def logged_in?
-    not session[:current_user].nil?
+    (not session[:current_user].nil?) || perf_test?
   end
-
+  
   def admin_logged_in?(qid = nil)
     session[:current_user]=="tony.nowatzki@gmail.com" or 
     session[:current_user]=="sr.iniv.t@gmail.com" or
     qid == CRON_ID
     #(RUBY_PLATFORM == 'java' and param[:X-AppEngine-Cron]==true)
+  end
+  
+  def perf_test?
+    params[:perf_test] == '1'
   end
   
   def time_dist(time)

@@ -1,0 +1,8 @@
+# Get
+/?perf_test=1
+
+# Post
+/?perf_test=1 method=POST contents="message=This is a message&&smiley=smile"
+
+# Get
+/?perf_test=1

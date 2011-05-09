@@ -16,6 +16,11 @@
       </div>
     </div>
   <% end %>
+  
+  <% if @posts.count >= 15 %>
+    <a style='padding:4.5em' href='/?more'> See more... </a>
+  <% end %>
+  
 <% else %>
   <center class='no_posts'>
     <!-- need some padding here! -->
