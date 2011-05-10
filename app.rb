@@ -163,7 +163,10 @@ get '/' do
   @scounts = Hash.new
   if logged_in?
     @friend_id = ""
-    @posts = Post.all(:order => [:created_at.desc], :user => current_user, :limit => 5)
+    @posts = []
+    Post::PostsPerPage.times do
+      @posts << Post.first(:order => [:created_at.desc], :user => current_user)
+    end
     @friends = Friend.all(:friend => current_user, :friend_state => 'accepted')
     @pending_friends = Friend.all(:friend => current_user, :friend_state => 'requested')
     @requested_friends = Friend.all(:friend => current_user, :friend_state => 'request_pending')
