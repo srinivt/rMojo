@@ -77,7 +77,7 @@ class Post
   property :message, Text, :required => true, :lazy => false
   property :created_at, Time, :default => lambda { |r, p| Time.now }
 
-  validates_presence_of :message
+  #validates_presence_of :message
 end
 
 # Friend relation describes relationship of 'friend' to 'user'
@@ -163,10 +163,7 @@ get '/' do
   @scounts = Hash.new
   if logged_in?
     @friend_id = ""
-    @posts = []
-    Post::PostsPerPage.times do
-      @posts << Post.first(:order => [:created_at.desc], :user => current_user)
-    end
+    @posts = Post.all(:order => [:created_at.desc], :user => current_user)
     @friends = Friend.all(:friend => current_user, :friend_state => 'accepted')
     @pending_friends = Friend.all(:friend => current_user, :friend_state => 'requested')
     @requested_friends = Friend.all(:friend => current_user, :friend_state => 'request_pending')
@@ -415,7 +412,7 @@ helpers do
   end
   
   def current_user
-    perf_test? ? "perf_user@mojo.com" : session[:current_user]
+    perf_test? ? "perf_user#{params[:puid]}@mojo.com" : session[:current_user]
   end
   
   def current_user_name
